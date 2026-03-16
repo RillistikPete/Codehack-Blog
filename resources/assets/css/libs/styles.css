@@ -1,0 +1,114 @@
+
+
+
+/****************User Profile  *********************/
+.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+.toppad{
+    margin-top:20px;
+}
+
+body {
+    background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
+    background-blend-mode: normal,color-burn;
+    font-size: 14px;
+}
+
+#postBody {
+    font-size: 15px !important; 
+}
+
+#bottomHr {
+    margin-bottom:36px !important;
+}
+
+/* navbar */
+
+.navbar {
+    background-color: slategray;
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+}
+
+#usernameAdmin a {
+    color: #245076;
+    font-size: 16px;
+    text-decoration: none;
+    padding-top: 10px;
+}
+#usernameAdmin a:hover {
+    text-shadow: 0 0 3px white;
+    cursor: pointer;
+    text-decoration: none;
+}
+#usernm {
+    color:white;
+    padding-right:20px;
+    font-size: 16px;
+}
+
+#blogHome {
+    color: #245076;
+}
+
+#blogHome:hover {
+    text-shadow: 0 0 1.1px #245076;
+}
+
+#loginRegLink {
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+.navbar.navbar-default.navbar-static-top {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    background-color: #49576D;
+}
+
+.navbar-right {
+    margin-top: 6px;
+}
+
+.navbar-inverse {
+    border: none !important;
+}
+
+#postTitle a{
+    text-decoration: none;
+    color: #337ab7;
+}
+
+#postTitle a:hover {
+    text-shadow: 0 0 1.1px #245076;
+}
