@@ -39,9 +39,10 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'role_id' => $input['role_id'] ?? 2, // default to regular user
-            'photo_id' => $input['photo_id'] ?? null, // these will always be null
-            'is_active' => $input['is_active'] ?? 1, // always 1 unless added to registration
+            // if you put $input['role_id'] then someone can inject json attack to create admin user
+            'role_id' => 2, // default to regular user 
+            'photo_id' => null, // these will always be null
+            'is_active' => 1, // always 1 unless added to registration
         ]);
     }
 }

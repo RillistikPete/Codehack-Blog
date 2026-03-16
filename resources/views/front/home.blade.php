@@ -55,7 +55,7 @@
 
                 <h4>Leave a Comment:</h4>
                 
-                {!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
+                {!! Form::open(['method'=>'POST', 'action'=>[PostCommentsController::class, 'store']]) !!}
 
                 <input type="hidden" name="post_id" value="{{$post->id}}">
 
@@ -119,7 +119,7 @@
 
                                             <div class="comment-reply col-sm-6" style="display:none;">
                                                 
-                                                {!! Form::open(['method'=>'POST', 'action'=>'CommentRepliesController@createReply']) !!}
+                                                {!! Form::open(['method'=>'POST', 'action'=>[CommentRepliesController::class, 'createReply']]) !!}
 
                                                 <input type="hidden" name="comment_id" value="{{$comment->id}}">
             
@@ -165,7 +165,7 @@
 
                  <!-- Pagination -->
                  <div class="row text-center">
-                     {{$posts->render()}}
+                     {{$posts->links()}}
                  </div>
 
 @stop

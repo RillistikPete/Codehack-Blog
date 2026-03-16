@@ -45,10 +45,11 @@ class User extends Authenticatable
         ];
     }
 
-    //custom funcs:
-        public function role() {
+    /* Custom Functions */
 
-        return $this->belongsTo('App\Role');
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     // public function roles(){
@@ -65,9 +66,10 @@ class User extends Authenticatable
 
     //     return $this->belongsTo('App\Role');
     // }
-    public function photo() {
-
-        return $this->belongsTo('App\Photo');
+    
+    public function photo()
+    {
+        return $this->belongsTo(Photo::class);
     }
 
     // public function setPasswordAttribute($password) {
@@ -77,10 +79,7 @@ class User extends Authenticatable
     // }
 
     public function isAdmin() {
-        if($this->role->name == "administrator" && $this->is_active == 1){
-            return true;
-        }
-            return false;
+        return $this->role && $this->role->name === 'administrator' && $this->is_active == 1;
     }
 
     public function posts() {
@@ -90,8 +89,9 @@ class User extends Authenticatable
 
     }
 
-    public function getGravatarAttribute() {
-
+    public function getGravatarAttribute()
+    {
+        $email = strtolower(trim($this->email));
         $hash = md5(strtoLower(trim($this->attributes['email']))) . "";
         return "http://www.gravatar.com/avatar/$hash";
     }
