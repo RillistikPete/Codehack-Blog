@@ -15,12 +15,11 @@
     {{-- <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet"> --}}
 
     <!-- My Mix CSS -->
-{{-- FOR SOME REASON, WHEN I EXCLUDE THE FOLLOWING STYLES, IT WORKS AS IT SHOULD. MUST LOAD APP.CSS SOMEHOW --}}
-    {{-- <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css"> --}}
 
-    <link href="{{asset('css/libs.css')}}" rel="stylesheet" type="text/css">
-
-
+    @vite('resources/css/app.css')
+    <!-- gonna need to change to vite:
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+ -->
 
     <!-- Custom CSS -->
     {{-- <link href="css/blog-post.css" rel="stylesheet"> --}}

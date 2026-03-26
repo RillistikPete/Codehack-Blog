@@ -45,33 +45,35 @@
 
 {{-- COMMENTS SECTION DONE MANUALLY, NO DISQUS --}}
 
+        @if ($posts)   
+            @foreach ($posts as $post)
+                <!-- Blog Comments -->
+                @if(Auth::check())
 
-        <!-- Blog Comments -->
-
-        @if(Auth::check())
-
-            <!-- Comments Form -->
-            <div class="well">
-
-                <h4>Leave a Comment:</h4>
-                
-                {!! Form::open(['method'=>'POST', 'action'=>[PostCommentsController::class, 'store']]) !!}
-
-                <input type="hidden" name="post_id" value="{{$post->id}}">
-
-
-                    <div class='form-group'>
-                    {!! Form::label('body', 'Body:') !!}
-                    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
+                    <!-- Comments Form -->
+                    <div class="well">
+                        <h4>Leave a Comment:</h4>
+                        <!-- less efficient: action([App\Http\Controllers\PostCommentsController::class 
+                            also don't store postId in the input field hidden, this is dumb - do it in the form tag: -->
+                        <form method="POST" action="{{ route('postcomments.store', $post->id) }}">
+                            @csrf
+                            <!-- <input type="hidden" name="post_id" value="{{ $post->id }}"> -->
+                            <div class="form-group">
+                                <label for="body">Body:</label>
+                                <textarea name="body" id="body" class="form-control @error('body') is-invalid @enderror" rows="3">{{ old('body') }}</textarea>
+                                @error('body')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class='form-group'>
-                    {!! Form::submit('Submit Comment', ['class'=>'btn btn-primary']) !!}
-                    </div>
-                {!! Form::close() !!}
-
-            </div>
+                @endif
+            @endforeach
         @endif
-
+        
             <hr>
 
 

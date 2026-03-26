@@ -1,3 +1,5 @@
+@vite('resources/css/app.css')
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,10 +11,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <!-- this goes on the tab title in browser -->
     <title>Welcome to Gavinfpk.com's Laravel Blog</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="{{asset('css/libs.css')}}">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

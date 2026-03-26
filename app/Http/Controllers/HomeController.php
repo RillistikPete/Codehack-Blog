@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 use Illuminate\Http\Request;
-use App\Post;
-use App\Photo;
-use App\Comment;
-use App\Category;
+use App\Models\Post;
+use App\Models\Photo;
+use App\Models\Comment;
+use App\Models\Category;
 use Carbon\Carbon;
 use Auth;
 

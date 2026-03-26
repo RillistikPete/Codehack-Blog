@@ -78,14 +78,14 @@ class User extends Authenticatable
     //     }
     // }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->role && $this->role->name === 'administrator' && $this->is_active == 1;
     }
 
     public function posts() {
 
         return $this->hasMany('App\Post');
-
 
     }
 

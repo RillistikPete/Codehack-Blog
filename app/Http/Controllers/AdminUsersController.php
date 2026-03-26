@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
-use App\Role;
-use App\User;
-use App\Photo;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 

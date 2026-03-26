@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Auth;
 use Mail;
-use App\Post;
-use App\Comment;
-use App\Category;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\Category;
 
 class ContactController extends Controller
 {

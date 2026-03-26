@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+/* merging styles.css with app.css for new lara 12 convention */
+@import './styles.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

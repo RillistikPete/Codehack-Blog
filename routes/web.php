@@ -24,3 +24,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
 });
+
+// PostComments
+Route::post('posts/{post}/comments', [PostCommentsController::class, 'store'])
+    ->name('postcomments.store');

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\Comment;
-use App\CommentReply;
-use App\Post;
+use App\Models\Comment;
+use App\Models\CommentReply;
+use App\Models\Post;
 
 class PostCommentsController extends Controller
 {
@@ -38,32 +38,58 @@ class PostCommentsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+    */
+    /* OLD FUNCTION:
     public function store(Request $request)
     {
         $user = Auth::user();
-
-        //Create this data object so you can pass them in and 
-        // don't have to create fields for them in the form:
         
-            $data = [
-
+        $data = [
             'post_id' => $request->post_id,
             'author' => $user->name,
             'email' => $user->email,
             'photo' => $user->photo ? $user->photo->file : '',
             'body' => $request->body
-
         ];
-
+        
         Comment::create($data);
         //return dd($data);
-
-        $request->session()->flash('comment_message', 'Your message has been submitted and is awaiting moderation');
         
+        $request->session()->flash('comment_message', 'Your message has been submitted and is awaiting moderation');
         return redirect()->back();
-
     }
+    */
+
+
+    // REFACTORED:
+    //OLD - Comment::create()	            User hidden input (post_id)
+    //NEW - $post->comments()->create()	    Your application (the $post)
+    public function store(Request $request, Post $post)
+    {
+        $user = auth()->user();
+
+        // Validate form (home blade)
+        $validated = $request->validate([
+            'post_id' => 'required|exists:posts,id',
+            'body' => 'required|string|max:1000',
+        ]);
+
+        // merge validated + server-side fields
+        $data = array_merge($validated, [
+            'author' => $user->name,
+            'email' => $user->email,
+            'photo' => $user->photo ? $user->photo->file : null,
+        ]);
+
+        Comment::create($data);
+
+        return back()->with(
+            'comment_message',
+            'Your message has been submitted and is awaiting moderation.'
+        );
+    }
+
+
 
     /**
      * Display the specified resource.

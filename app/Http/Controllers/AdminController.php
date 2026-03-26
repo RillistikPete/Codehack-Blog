@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post;
-use App\Category;
-use App\Comment;
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\Comment;
 
 class AdminController extends Controller
 {

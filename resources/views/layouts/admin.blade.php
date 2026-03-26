@@ -16,7 +16,7 @@
     {{-- FOR SOME REASON, WHEN I EXCLUDE THE FOLLOWING STYLES, IT WORKS AS IT SHOULD. MUST LOAD APP.CSS SOMEHOW --}}
     {{-- <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css"> --}}
 
-    <link href="{{asset('css/libs.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
