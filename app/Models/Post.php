@@ -13,7 +13,6 @@ class Post extends Model
     use Sluggable;
     use SluggableScopeHelpers;
 
-
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -29,7 +28,6 @@ class Post extends Model
         ];
     }
 
-
     protected $fillable = [
         'category_id',
         'photo_id',
@@ -40,16 +38,11 @@ class Post extends Model
 
 
     public function user() {
-
-        //look at it like: "$This post belongs to User"
-        return $this->belongsTo('App\User');
-
+        return $this->belongsTo(User::class);
     }
 
     public function photo() {
-        
-        return $this->belongsTo('App\Photo');
-
+        return $this->belongsTo(Photo::class);
     }
 
     // public function obj_url() {
@@ -58,18 +51,14 @@ class Post extends Model
     // }
 
     public function category() {
-
-        return $this->belongsTo('App\Category');
-
+        return $this->belongsTo(Category::class);
     }
 
     public function comments() {
-
-        return $this->hasMany('App\Comment');
+        return $this->hasMany(Comment::class);
     }
 
     public function photoPlaceholder() {
-
         return "/images/placeholder.jpg";
     }
 

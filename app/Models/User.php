@@ -47,8 +47,7 @@ class User extends Authenticatable
 
     /* Custom Functions */
 
-    public function role()
-    {
+    public function role() {
         return $this->belongsTo(Role::class);
     }
 
@@ -67,8 +66,7 @@ class User extends Authenticatable
     //     return $this->belongsTo('App\Role');
     // }
     
-    public function photo()
-    {
+    public function photo() {
         return $this->belongsTo(Photo::class);
     }
 
@@ -84,13 +82,10 @@ class User extends Authenticatable
     }
 
     public function posts() {
-
-        return $this->hasMany('App\Post');
-
+        return $this->hasMany(Post::class);
     }
 
-    public function getGravatarAttribute()
-    {
+    public function getGravatarAttribute() {
         $email = strtolower(trim($this->email));
         $hash = md5(strtoLower(trim($this->attributes['email']))) . "";
         return "http://www.gravatar.com/avatar/$hash";

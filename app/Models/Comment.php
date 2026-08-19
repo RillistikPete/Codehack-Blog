@@ -18,19 +18,15 @@ class Comment extends Model
     ];
 
     public function replies() {
-
-        return $this->hasMany('App\CommentReply');
-
+        return $this->hasMany(CommentReply::class);
     }
 
     public function post() {
-
-        return $this->belongsTo('App\Post');
-        
+        return $this->belongsTo(Post::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 }

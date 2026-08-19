@@ -21,9 +21,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
+        // this register function is meant only for container bindings 
+
+        // Fortify::registerView(function () {
+        //     return view('auth.register');
+        // });
     }
 
     /**
@@ -38,6 +40,10 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
         
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
         Fortify::loginView(function () {
             return view('auth.login');
         });
@@ -51,5 +57,9 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
+
+        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+
+        Fortify::resetPasswordView(fn (Request $request) => view('auth.reset-password', ['request' => $request]));
     }
 }

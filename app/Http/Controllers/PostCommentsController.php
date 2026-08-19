@@ -39,29 +39,12 @@ class PostCommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
     */
-    /* OLD FUNCTION:
-    public function store(Request $request)
-    {
-        $user = Auth::user();
-        
-        $data = [
-            'post_id' => $request->post_id,
-            'author' => $user->name,
-            'email' => $user->email,
-            'photo' => $user->photo ? $user->photo->file : '',
-            'body' => $request->body
-        ];
-        
-        Comment::create($data);
-        //return dd($data);
-        
-        $request->session()->flash('comment_message', 'Your message has been submitted and is awaiting moderation');
-        return redirect()->back();
-    }
-    */
 
 
-    // REFACTORED:
+    // REFACTORED: 
+
+  // ******CHECK THIS LATER TO ENSURE WORKING **************
+
     //OLD - Comment::create()	            User hidden input (post_id)
     //NEW - $post->comments()->create()	    Your application (the $post)
     public function store(Request $request, Post $post)

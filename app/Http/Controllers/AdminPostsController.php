@@ -140,15 +140,16 @@ class AdminPostsController extends Controller
     }
 
     //this is for post.blade.php
-    public function post($slug){
+    // removed after refactoring routes to call home controller instead
+    // public function post($slug){
 
-        $post = Post::findBySlug($slug);
+    //     $post = Post::findBySlug($slug);
 
-        $comments = $post->comments()->whereIsActive(1)->get();
+    //     $comments = $post->comments()->whereIsActive(1)->get();
         
-        return view('post', compact('post', 'comments'));
+    //     return view('post', compact('post', 'comments'));
 
-    }
+    // }
 
 
 
