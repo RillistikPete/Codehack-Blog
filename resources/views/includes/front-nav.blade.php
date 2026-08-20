@@ -30,7 +30,7 @@
                         <h4 id="usernm"> {{Auth::user()->name}} </h4>
                     </li>
                     <li>
-                        <h4 style="padding-right:20px;"><a href="{{url('/admin')}}">Admin</a></h4>
+                        <h4 style="padding-right:20px;"><a href="{{url('/admin/dashboard')}}">Admin</a></h4>
                     </li>
 
                     <li>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 // for AdminPostsController@post to be able to find by slug
@@ -45,11 +45,39 @@ class Post extends Model
         return $this->belongsTo(Photo::class);
     }
 
-    // public function obj_url() {
+    // accessor
+    public function getObjUrlAttribute($value): ?string
+    {
+        // value is the stored column
+        if ($value) {
+            return $value;
+        }
 
-    //     return $this->belongsTo('App\Obj_Url');
-    // }
+        $name = $this->photo?->getRawOriginal('file');
 
+        return $name ? Storage::disk('s3')->url($name) : null;
+    }
+
+    /*
+    for understanding above accessor:
+    Eloquent resolves it by naming convention:
+
+    $post->obj_url
+      → Model::__get('obj_url')
+      → getAttribute('obj_url')
+      → looks for "get" . Str::studly('obj_url') . "Attribute"
+      → getObjUrlAttribute()  ← found, so call it
+
+    if you ever need the untouched database value, $post->getRawOriginal('obj_url') bypasses the accessor
+    
+    laravel 9 added this syntax equivalent:
+    protected function objUrl(): Attribute
+    {
+        return Attribute::get(fn ($value) => $value ?: // derive );
+    }
+    */
+
+    //And if you ever need the untouched database value, $post->getRawOriginal('obj_url')
     public function category() {
         return $this->belongsTo(Category::class);
     }

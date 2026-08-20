@@ -115,25 +115,27 @@ class AdminUsersController extends Controller
 
         // If no password, do request without it. If not, encrypt it:
         if(trim($request->password) == '') {
-
             $input = $request->except('password');
         }
         else {
-            
             $input = $request->all();
-            $input['password'] = bcrypt($request->password);
+            //users casts function handles hashing password
         }
 
         //Creates (moves) photo into images folder, updates this 'file' part of request:
-        if($file = $request->file('photo_id'))
+        if ($file = $request->file('photo_id'))
         {
-            $name = time() . $file->getClientOriginalName();
-            $file->move('images', $name);
-            $photo = Photo::create(['file'=>$name]);
+            $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                . '-' . time() . '.' . $file->getClientOriginalExtension();
+
+            $file->storeAs('', $name, 's3');
+
+            $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
         }
+        
         $user->update($input);
-        return redirect('/admin/users');
+        redirect()->route('users.index');
     }
 
         /**

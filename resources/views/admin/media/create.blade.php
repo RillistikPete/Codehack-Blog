@@ -18,9 +18,12 @@
         <h3 class="text-center">Click box or drag files into box to upload</h3>
         <div class="col-lg-12">
             <span class="border border-success">
-                {!! Form::open(['method'=>'POST', 'action'=>'AdminMediaController@store', 'class'=>'dropzone', 'style'=>'border:1px solid green;height:400px;border-radius:5px;', 'rows'=>400]) !!}
-            
-                {!! Form::close() !!}
+                <form method="POST" action="{{ route('media.store') }}"
+                    class="dropzone" id="media-dropzone"
+                    enctype="multipart/form-data"
+                    style="border:1px solid green;height:400px;border-radius:5px;">
+                    @csrf
+                </form>
             </span>
         </div>
 

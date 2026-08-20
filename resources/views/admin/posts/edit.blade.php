@@ -1,65 +1,71 @@
 @extends('layouts.admin')
 
-
-
 @section('content')
-    
+
     @include('includes.tinyeditor')
 
-<h1>Edit Post</h1>
+    <h1>Edit Post</h1>
 
-<div class="row">
+    <div class="row">
+        <div class="col-sm-6">
+            <img src="{{ $post->photo ? $post->photo->file : $post->photoPlaceholder() }}"
+                 alt="" class="img-responsive">
+        </div>
 
         <div class="col-sm-6">
 
-            <img src="{{$post->photo ? $post->photo->file : $post->photoPlaceholder()}}" alt="" class="img-responsive">
+            <form method="POST" action="{{ route('posts.update', $post->id) }}"
+                  enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
+                <!-- What Laravel actually renders in the browser with this patch directive-->
+                <!-- <form action="/profile" method="POST">
+                        <input type="hidden" name="_method" value="PATCH">
+                    </form> -->
+
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" class="form-control"
+                           value="{{ old('title', $post->title) }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="category_id">Category:</label>
+                    <select name="category_id" id="category_id" class="form-control">
+                        @foreach ($categories as $id => $name)
+                            <option value="{{ $id }}"
+                                @selected(old('category_id', $post->category_id) == $id)>{{ $name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo_id">Photo:</label>
+                    <input type="file" name="photo_id" id="photo_id" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="body">Description:</label>
+                    <textarea name="body" id="tinyeditor" class="form-control">{{ old('body', $post->body) }}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+
+            <form method="POST" action="{{ route('posts.destroy', $post->id) }}"
+                  onsubmit="return confirm('Delete this post?');">
+                @csrf
+                @method('DELETE')
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
 
         </div>
-        
-        <div class="col-sm-6">
-
-            {!! Form::model($post, ['method'=>'PATCH', 'action'=>['AdminPostsController@update', $post->id], 'files' => true]) !!}
-            <div class='form-group'>
-            {!! Form::label('title', 'Title:') !!}
-            {!! Form::text('title', null, ['class'=>'form-control']) !!}
-            </div>
-
-            <div class='form-group'>
-            {!! Form::label('category_id', 'Category:') !!}
-            {!! Form::select('category_id', $categories, null, ['class'=>'form-control']) !!}
-            </div>
-
-            <div class='form-group'>
-            {!! Form::label('photo_id', 'Photo:') !!}
-            {!! Form::file('photo_id', null, ['class'=>'form-control']) !!}
-            </div>
-
-            <div class='form-group'>
-            {!! Form::label('body', 'Description:') !!}
-            {!! Form::textarea('body', null, ['class'=>'form-control']) !!}
-            </div>
-
-
-            {!! Form::submit('Update', ['class'=>'btn btn-primary']) !!}
-            {!! Form::close()!!}
-
-            <div class='form-group'>
-            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminPostsController@destroy', $post->id]]) !!}
-            <div class='form-group'>
-            {!! Form::submit('Delete', ['class'=>'btn btn-danger']) !!}
-            </div>
-            {!! Form::close() !!}
-            </div>
-
-        </div>
-
-</div>
-
-</div>
+    </div>
 
     <div class="row">
         @include('includes.form_error')
     </div>
-
 
 @endsection

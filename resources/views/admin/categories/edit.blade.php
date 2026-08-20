@@ -7,25 +7,27 @@
     <h1>Categories</h1>
     <hr>
     <div class="col-sm-6">
-
-
-        {!! Form::model($category, ['method'=>'PATCH', 'action'=>['AdminCategoriesController@update', $category->id]]) !!}
-            <div class='form-group'>
-            {!! Form::label('name', 'Name:') !!}
-            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+        <form method="POST" action="{{ route('categories.update', $category->id) }}">
+            @csrf
+            @method('PATCH')
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control"
+                    value="{{ old('name', $category->name) }}">
             </div>
             <div class="form-group">
-            {!! Form::submit('Update Category', ['class'=>'btn btn-primary col-sm-6']) !!}
+                <button type="submit" class="btn btn-primary col-sm-6">Update Category</button>
             </div>
-        {!! Form::close() !!}
+        </form>
 
-
-        {!! Form::open(['method'=>'DELETE', 'action'=>['AdminCategoriesController@destroy', $category->id]]) !!}
-            <div class='form-group'>
-                {!! Form::submit('Delete Category', ['class'=>'btn btn-danger col-sm-6']) !!}
+        <form method="POST" action="{{ route('categories.destroy', $category->id) }}"
+            onsubmit="return confirm('Delete this category?');">
+            @csrf
+            @method('DELETE')
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger col-sm-6">Delete Category</button>
             </div>
-        {!! Form::close() !!}
-
+        </form>
     </div>
 
     <div class="col-sm-6">

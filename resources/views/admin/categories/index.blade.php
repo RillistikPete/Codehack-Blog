@@ -8,15 +8,16 @@
     <hr>
     <div class="col-sm-6">
 
-        {!! Form::open(['method'=>'POST', 'action'=>'AdminCategoriesController@store']) !!}
-        <div class='form-group'>
-        {!! Form::label('name', 'Name:') !!}
-        {!! Form::text('name', null, ['class'=>'form-control']) !!}
-        </div>
-        <div class="form-group">
-        {!! Form::submit('Create Category', ['class'=>'btn btn-primary']) !!}
-        </div>
-        {!! Form::close() !!}
+        <form method="POST" action="{{ route('categories.store') }}">
+            @csrf
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create Category</button>
+            </div>
+        </form>
     </div>
 
     <div class="col-sm-6">

@@ -9,31 +9,35 @@
     <h1>Create Post</h1>
 
     <div class="row">
-        {!! Form::open(['method'=>'POST', 'action'=>'AdminPostsController@store', 'files' => true]) !!}
-        <div class='form-group'>
-        {!! Form::label('title', 'Title:') !!}
-        {!! Form::text('title', null, ['class'=>'form-control']) !!}
-        </div>
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+            <div class='form-group'>
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}">
+            </div>
 
-        <div class='form-group'>
-        {!! Form::label('category_id', 'Category:') !!}
-        {!! Form::select('category_id', [''=>'Choose Category'] + $categories, null, ['class'=>'form-control', 'style'=>'width:155px;']) !!}
-        </div>
+            <div class='form-group'>
+                <label for="category_id">Category:</label>
+                <select name="category_id" id="category_id" class="form-control" style="width:155px;">
+                    <option value="">Choose Category</option>
+                    @foreach ($categories as $id => $name)
+                        <option value="{{ $id }}" @selected(old('category_id') == $id)>{{ $name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class='form-group'>
-        {!! Form::label('photo_id', 'Photo:') !!}
-        {!! Form::file('photo_id', null, ['class'=>'form-control']) !!}
-        </div>
+            <div class='form-group'>
+                <label for="photo_id">Photo:</label>
+                <input type="file" name="photo_id" id="photo_id" class="form-control">
+            </div>
 
-        <div class='form-group'>
-        {!! Form::label('body', 'Description:') !!}
-        {!! Form::textarea('body', null, ['class'=>'form-control', 'id'=>'tinyeditor']) !!}
-        </div>
+            <div class='form-group'>
+                <label for="body">Description:</label>
+                <textarea name="body" id="tinyeditor" class="form-control">{{ old('body') }}</textarea>
+            </div>
 
 
-        {!! Form::submit('Create', null, ['class'=>'btn btn-primary']) !!}
-        </div>
-        {!! Form::close()!!}
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
     </div>
     
     <div class="row">

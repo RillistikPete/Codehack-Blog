@@ -146,6 +146,7 @@ return [
     //     //'AWS' => Aws\Laravel\AwsFacade::class,
     // ],
 
-
+    // for db seeding purposes only
+    'seed_admin_password' => env('SEED_ADMIN_PASSWORD'),
 
 ];

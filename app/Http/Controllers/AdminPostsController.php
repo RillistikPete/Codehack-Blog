@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Photo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Http\Requests\PostsCreateRequest;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -55,15 +56,24 @@ class AdminPostsController extends Controller
         //Need to upload to S3 bucket instead of moving to image folder
         //******* MAY HELP FOR SPEC CHAR PROBLEM */ / 8-9-22
         //You might want to use Laravel's built-in Str::slug() method to convert that title into something friendlier
-        if($file = $request->file('photo_id')) {
-            // If you have file, get the original name of it,
-            // then move it to the images folder,
-            // then create a photo, then in 'Create Post', insert photo id
-            $name = str_replace(' ', '-', $file->getClientOriginalName());
-            // $finalName = str_replace('#', '')
-            // $file->move('images', $name);
-            $file->store($name, 's3');
-            $photo = Photo::create(['file'=>$name]);
+        // if($file = $request->file('photo_id')) {
+        //     // If you have file, get the original name of it,
+        //     // then move it to the images folder,
+        //     // then create a photo, then in 'Create Post', insert photo id
+        //     $name = str_replace(' ', '-', $file->getClientOriginalName());
+        //     // $finalName = str_replace('#', '')
+        //     // $file->move('images', $name);
+        //     $file->store($name, 's3');
+        //     $photo = Photo::create(['file'=>$name]);
+        //     $input['photo_id'] = $photo->id;
+        // }
+        if ($file = $request->file('photo_id')) {
+            $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                . '.' . $file->getClientOriginalExtension();
+
+            $file->storeAs('', $name, 's3');
+
+            $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
         }
 
@@ -109,11 +119,13 @@ class AdminPostsController extends Controller
         $input = $request->all();
         // delete post objurl so that it will update after refresh!
         // checking to see if photo exists, if not, create it:
-        if($file = $request->file('photo_id')) {
-            $name = str_replace(' ', '-', $file->getClientOriginalName());
-            // $file->move('images', $name);
-            $file->store($name, 's3');
-            $photo = Photo::create(['file'=>$name]);
+        if ($file = $request->file('photo_id')) {
+            $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                . '.' . $file->getClientOriginalExtension();
+
+            $file->storeAs('', $name, 's3');
+
+            $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
         }
         //see same logic in @store, we are eliminating lines

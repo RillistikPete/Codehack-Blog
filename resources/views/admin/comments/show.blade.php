@@ -1,11 +1,6 @@
-
 @extends('layouts.admin')
 
-
-
 @section('content')
-    
-
 
     @if($comments)
         
@@ -17,59 +12,55 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
-                    </tr>
+                </tr>
                 </thead>
                 <tbody>
-                        @foreach ($comments as $comment)
+                    @foreach ($comments as $comment)
+                        <tr>
+                            <td>{{$comment->id}}</td>
+                            <td>{{$comment->author}}</td>
+                            <td>{{$comment->email}}</td>
+                            <td>{{$comment->body}}</td>
+                            <td>
+                                @if ($comment->post)
+                                    <a href="{{route('home.post', $comment->post->slug)}}">View Post</a>
+                                @endif
+                            </td>
 
-                        <td>{{$comment->id}}</td>
-                        <td>{{$comment->author}}</td>
-                        <td>{{$comment->email}}</td>
-                        <td>{{$comment->body}}</td>
-                        <td><a href="{{route('home.post', $comment->post->slug)}}">View Post</td>
+                            <td>
+                                @if ($comment->is_active == 1)
+                                    <form method="POST" action="{{ route('comments.update', $comment->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="0">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-warning">Disapprove</button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('comments.update', $comment->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="1">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </div>
+                                    </form>
+                                @endif
+                            </td>
 
-                        <td>
-
-                            @if ($comment->is_active == 1)
-
-                            {!! Form::open(['method'=>'PATCH', 'action'=>['PostCommentsController@update', $comment->id]]) !!}
-                                
-                                <input type="hidden" name="is_active" value="0">
-                                <div class='form-group'>
-                                  {!! Form::submit('Disapprove', ['class'=>'btn btn-warning']) !!}
-                                </div>
-                            {!! Form::close() !!}
-                            
-                            @else 
-                            
-                  
-                            {!! Form::open(['method'=>'PATCH', 'action'=>['PostCommentsController@update', $comment->id]]) !!}
-                                
-                                <input type="hidden" name="is_active" value="1">
-                                <div class='form-group'>
-                                  {!! Form::submit('Approve', ['class'=>'btn btn-success']) !!}
-                                </div>
-                            {!! Form::close() !!}
-
-                            @endif
-
-                        </td>
-
-                        <td>
-
-                            {!! Form::open(['method'=>'DELETE', 'action'=>['PostCommentsController@destroy', $comment->id]]) !!}
-                                
-                                <div class='form-group'>
-                                  {!! Form::submit('Delete', ['class'=>'btn btn-danger']) !!}
-                                </div>
-                            {!! Form::close() !!}
-
-                        </td>
-                    </tr>
-
+                            <td>
+                                <form method="POST" action="{{ route('comments.destroy', $comment->id) }}"
+                                    onsubmit="return confirm('Delete this comment?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
                     @endforeach
-
-
 
                     <tr>
                         <td></td>

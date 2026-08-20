@@ -53,6 +53,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
     Route::get('media/create', [AdminMediaController::class, 'create'])->name('media.create');
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
-    Route::delete('media/{id}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
     Route::delete('media/bulk', [AdminMediaController::class, 'deleteMedia'])->name('media.bulk-delete');
+    Route::delete('media/{id}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
 });

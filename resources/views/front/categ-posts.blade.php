@@ -25,7 +25,7 @@
                 <p><span class="glyphicon glyphicon-time"></span> Created {{$post->created_at->diffForHumans()}}</p>
                 <hr>
 
-                <img class="img-responsive" src="{{ $post->obj_url ? $post->obj_url : $post->photoPlaceholder() }}" alt="{{ $post->photo->file }}">
+                <img class="img-responsive" src="{{ $post->obj_url ? $post->obj_url : $post->photoPlaceholder() }}" alt="{{ $post->photo?->file }}">
 
                 <hr>
                 <p>

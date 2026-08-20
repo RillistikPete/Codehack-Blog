@@ -14,50 +14,64 @@
     </div>
     <br>
     <div class="panel-body">
-            {!! Form::model($user, ['method'=>'PATCH', 'action'=>['AdminUsersController@update', $user->id], 'files'=>true]) !!}
+            <form method="POST" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
 
-                <div class='form-group'>
-                    {!! Form::label('name', 'Name:') !!}
-                    {!! Form::text('name', null, ['class'=>'form-control']) !!}
-                </div>
-                
-                <div class='form-group'>
-                    {!! Form::label('email', 'Email:') !!}
-                    {!! Form::email('email', null, ['class'=>'form-control']) !!}
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" class="form-control"
+                        value="{{ old('name', $user->name) }}">
                 </div>
 
-                <div class='form-group'>
-                    {!! Form::label('role_id', 'Role:') !!}
-                    {!! Form::select('role_id', [''=>'Choose An Option'] + $roles, null, ['class'=>'form-control']) !!}
-                </div>
-            
-                <div class='form-group'>
-                    {!! Form::label('is_active', 'Status:') !!}
-                    {!! Form::select('is_active', array(1 => 'Active', 0 => 'Offline') ,null, ['class'=>'form-control']) !!}
-                </div>
-                
-                <div class='form-group'>
-                    {!! Form::label('password', 'Password:') !!}
-                    {!! Form::password('password', ['class'=>'form-control']) !!}
-                </div>
-                
-                <div class='form-group'>
-                    {!! Form::label('photo_id', 'Photo:') !!}
-                    {!! Form::file('photo_id', null, ['class'=>'form-control']) !!}
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control"
+                        value="{{ old('email', $user->email) }}">
                 </div>
 
-                <div class='form-group'>
-                    {!! Form::submit('Update User', ['class'=>'btn btn-primary col-sm-6']) !!}
+                <div class="form-group">
+                    <label for="role_id">Role:</label>
+                    <select name="role_id" id="role_id" class="form-control">
+                        <option value="">Choose An Option</option>
+                        @foreach ($roles as $id => $name)
+                            <option value="{{ $id }}" @selected(old('role_id', $user->role_id) == $id)>{{ $name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-            {!! Form::close() !!}
-            
-            {{-- DELETE --}}
-            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUsersController@destroy', $user->id], 'class'=>'']) !!}
-                <div class='form-group'>
-                    {!! Form::submit('Delete User', ['class'=>'btn btn-danger col-sm-6']) !!}
+                <div class="form-group">
+                    <label for="is_active">Status:</label>
+                    <select name="is_active" id="is_active" class="form-control">
+                        <option value="1" @selected(old('is_active', $user->is_active) == 1)>Active</option>
+                        <option value="0" @selected(old('is_active', $user->is_active) == 0)>Offline</option>
+                    </select>
                 </div>
-            {!! Form::close() !!}
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                        placeholder="Leave blank to keep current password">
+                </div>
+
+                <div class="form-group">
+                    <label for="photo_id">Photo:</label>
+                    <input type="file" name="photo_id" id="photo_id" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary col-sm-6">Update User</button>
+                </div>
+            </form>
+
+            <form method="POST" action="{{ route('users.destroy', $user->id) }}"
+                onsubmit="return confirm('Delete this user?');">
+                @csrf
+                @method('DELETE')
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger col-sm-6">Delete User</button>
+                </div>
+            </form>
             
         </div>
 
