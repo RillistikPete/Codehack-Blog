@@ -1,85 +1,77 @@
-
 @extends('layouts.admin')
 
 @section('content')
 
-    @if (count($comments) > 0)
-        
-        <h1>Comments</h1>
-            
-        <table class='table table-hover'>
+    @if ($post)
+        <h1>Comments on “{{ $post->title }}”</h1>
+        <p><a href="{{ route('comments.index') }}">&larr; All comments</a></p>
+    @else
+        <h1>All Comments</h1>
+    @endif
+
+    @if ($comments->count() > 0)
+
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Author</th>
                     <th>Email</th>
+                    <th>Comment</th>
+                    <th>Post</th>
+                    <th>Replies</th>
+                    <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($comments as $comment)
                     <tr>
-                        <td>{{$comment->id}}</td>
-                        <td>{{$comment->author}}</td>
-                        <td>{{$comment->email}}</td>
-                        <td>{{$comment->body}}</td>
+                        <td>{{ $comment->id }}</td>
+                        <td>{{ $comment->author }}</td>
+                        <td>{{ $comment->email }}</td>
+                        <td>{{ Str::limit($comment->body, 60) }}</td>
                         <td>
                             @if ($comment->post)
-                                <a href="{{route('home.post', $comment->post->slug)}}">View Post</a>
-                            @endif
-                        </td>
-                        <td><a href="{{route('replies.show', $comment->id)}}">View Replies</a></td>
-
-                        <td>
-                            @if ($comment->is_active == 1)
-                                <form method="POST" action="{{ route('comments.update', $comment->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="is_active" value="0">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-warning">Disapprove</button>
-                                    </div>
-                                </form>
+                                <a href="{{ route('home.post', $comment->post->slug) }}">View Post</a>
                             @else
-                                <form method="POST" action="{{ route('comments.update', $comment->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="is_active" value="1">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success">Approve</button>
-                                    </div>
-                                </form>
+                                <span class="text-muted">&mdash;</span>
                             @endif
                         </td>
-
+                        <td>
+                            <a href="{{ route('replies.index', ['comment' => $comment->id]) }}">
+                                View Replies
+                            </a>
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ route('comments.update', $comment->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="is_active"
+                                       value="{{ $comment->is_active == 1 ? 0 : 1 }}">
+                                <button type="submit"
+                                        class="btn btn-sm {{ $comment->is_active == 1 ? 'btn-warning' : 'btn-success' }}">
+                                    {{ $comment->is_active == 1 ? 'Disapprove' : 'Approve' }}
+                                </button>
+                            </form>
+                        </td>
                         <td>
                             <form method="POST" action="{{ route('comments.destroy', $comment->id) }}"
-                                onsubmit="return confirm('Delete this comment?');">
+                                  onsubmit="return confirm('Delete this comment?');">
                                 @csrf
                                 @method('DELETE')
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </div>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
-
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
             </tbody>
         </table>
-            
 
+        <div class="text-center">{{ $comments->appends(request()->query())->links() }}</div>
 
-
-            @else 
-
-                <h1 class="text-center">No Comments</h1>
-
+    @else
+        <h3 class="text-center">No comments{{ $post ? ' on this post' : '' }} yet.</h3>
     @endif
-        
-     
+
 @endsection

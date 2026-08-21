@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
         ->name('postcomments.store');
 
     Route::post('comments/{comment}/replies', [CommentRepliesController::class, 'store'])
-        ->name('replies.create');
+        ->name('replies.store');
 });
 /* ---------------- Admin ---------------- */
 
@@ -46,10 +46,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // store lives on the public route above
     Route::resource('comments', PostCommentsController::class)
-        ->only(['index', 'show', 'edit', 'update', 'destroy'])->names('comments');
+        ->only(['index', 'update', 'destroy'])->names('comments');
 
     Route::resource('replies', CommentRepliesController::class)
-        ->only(['store', 'show', 'update', 'destroy'])->names('replies');
+        ->only(['index', 'update', 'destroy'])->names('replies');
 
     // media has no edit/update
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');

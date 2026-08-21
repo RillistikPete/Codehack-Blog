@@ -14,9 +14,18 @@ class CommentRepliesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $comment = $request->filled('comment')
+            ? Comment::find($request->query('comment'))
+            : null;
+
+        $replies = CommentReply::with('comment.post')
+            ->when($comment, fn ($q) => $q->where('comment_id', $comment->id))
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.comments.replies.index', compact('replies', 'comment'));
     }
 
 
@@ -28,9 +37,6 @@ class CommentRepliesController extends Controller
      */
     public function store(Request $request, Comment $comment)
     {
-                dd('req', $request);
-
-        dd('comment', $comment);
         $user = auth()->user();
 
         $validated = $request->validate([
@@ -51,19 +57,6 @@ class CommentRepliesController extends Controller
         return back()->with('reply_message', $isAdmin
             ? 'Reply posted.'
             : 'Your reply has been submitted and is awaiting moderation.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $comment = Comment::findOrFail($id);
-        $replies = $comment->replies;
-        return view('admin.comments.replies.show', compact('replies'));
     }
 
     /**

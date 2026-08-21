@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
-use App\Models\CommentReply;
 use App\Models\Post;
 
 class PostCommentsController extends Controller
@@ -14,23 +13,20 @@ class PostCommentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $post = $request->filled('post')
+            ? Post::find($request->query('post'))
+            : null;
 
-        $comments = Comment::all();
+        $comments = Comment::with('post')
+            ->when($post, fn ($q) => $q->where('post_id', $post->id))
+            ->latest()
+            ->paginate(20);
 
-        return view('admin.comments.index', compact('comments'));
+        return view('admin.comments.index', compact('comments', 'post'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -75,20 +71,6 @@ class PostCommentsController extends Controller
             : 'Your message has been submitted and is awaiting moderation.');
     }
 
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $post = Post::findOrFail($id);
-        $comments = $post->comments;
-        return view('admin.comments.show', compact('comments'));
-    }
 
     /**
      * Show the form for editing the specified resource.

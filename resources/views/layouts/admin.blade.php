@@ -44,6 +44,7 @@
                     </li>
                     <li><a href="{{ route('categories.index') }}"><i class="fa fa-tags fa-fw"></i> Categories</a></li>
                     <li><a href="{{ route('comments.index') }}"><i class="fa fa-comments fa-fw"></i> Comments</a></li>
+                    <li><a href="{{ route('replies.index') }}"><i class="fa fa-reply fa-fw"></i> Replies</a></li>
                     <li><a href="{{ route('media.index') }}"><i class="fa fa-picture-o fa-fw"></i> Media</a></li>
                 </ul>
             </div>
