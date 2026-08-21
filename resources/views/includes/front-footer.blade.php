@@ -1,27 +1,24 @@
 
-
-<!-- Footer -->
-<footer>
-    <div class="row">
-        <div class="col-lg-12">
-        <p>Copyright &copy; Codehack Blog {{\Carbon\Carbon::now()->year}}</p>
-        </div>
-        <!-- /.col-lg-12 -->
+    <!-- Footer -->
+    <div class="container">
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                <p>Copyright &copy; G. Forrest Blog {{now()->year}}</p>
+                </div>
+            </div>
+        </footer>
     </div>
-    <!-- /.row -->
-</footer>
 
-</div> <!-- container -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<!-- jQuery -->
-{{-- <script src="js/jquery.js"></script> --}}
+    <!-- for CommonMark emit of ```csharp e.g. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{asset('js/libs.js')}}"></script>
-
-@yield('scripts')
+    @yield('scripts')
 
 </body>
-
 </html>

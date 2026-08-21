@@ -39,7 +39,6 @@ class AdminPostsController extends Controller
     {
         $categories = Category::pluck('name', 'id')->all();
         return view('admin.posts.create', compact('categories'));
-        
     }
     
     /**
@@ -50,23 +49,9 @@ class AdminPostsController extends Controller
      */
     public function store(PostsCreateRequest $request)
     {
-        $input = $request->all();
+        $input = $request->validated();
         $user = Auth::user();
 
-        //Need to upload to S3 bucket instead of moving to image folder
-        //******* MAY HELP FOR SPEC CHAR PROBLEM */ / 8-9-22
-        //You might want to use Laravel's built-in Str::slug() method to convert that title into something friendlier
-        // if($file = $request->file('photo_id')) {
-        //     // If you have file, get the original name of it,
-        //     // then move it to the images folder,
-        //     // then create a photo, then in 'Create Post', insert photo id
-        //     $name = str_replace(' ', '-', $file->getClientOriginalName());
-        //     // $finalName = str_replace('#', '')
-        //     // $file->move('images', $name);
-        //     $file->store($name, 's3');
-        //     $photo = Photo::create(['file'=>$name]);
-        //     $input['photo_id'] = $photo->id;
-        // }
         if ($file = $request->file('photo_id')) {
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 . '.' . $file->getClientOriginalExtension();
@@ -79,7 +64,7 @@ class AdminPostsController extends Controller
 
         $user->posts()->create($input);
         
-        return redirect('/admin/posts');
+        return redirect()->route('posts.index')->with('success', 'Post created.');
     }
 
     /**
@@ -128,7 +113,7 @@ class AdminPostsController extends Controller
             $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
         }
-        //see same logic in @store, we are eliminating lines
+
         Auth::user()->posts()->whereId($id)->first()->update($input);
 
         return redirect('/admin/posts');

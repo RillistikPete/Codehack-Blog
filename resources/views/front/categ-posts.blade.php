@@ -13,14 +13,12 @@
     <div class="col-md-8">
 
         @if ($posts)
-     
             @foreach ($posts as $post)
-    
-            <h2 id="postTitle">
-                <a href="/post/{{$post->slug}}">{{$post->title}}</a>
-            </h2>
+                <h2 id="postTitle">
+                    <a href="/post/{{$post->slug}}">{{$post->title}}</a>
+                </h2>
                 <p class="lead">
-                    by {{$post->user->name}}
+                    by {{$post->user?->name}}
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Created {{$post->created_at->diffForHumans()}}</p>
                 <hr>
@@ -29,144 +27,30 @@
 
                 <hr>
                 <p>
-                    {!! $post->body !!}
-                    {{-- {!!str_limit($post->body , 200)!!} --}}
+                    <div id="postBody">
+                        {{ $post->excerpt }}
+                    </div>
                 </p>
     
                 <div class="text-center">
                     <a class="btn btn-primary" href="/post/{{$post->slug}}">Go to post <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
         
-                <hr id="bottomHr">
-								
+                <hr id="bottomHr">			
             @endforeach
-
         @endif
 
+    </div>  <!-- col-md-8 -->
 
+@include('includes.front-sidebar')
 
-{{-- COMMENTS SECTION DONE MANUALLY, NO DISQUS --}}
+</div> <!-- ROW -->
 
-
-        <!-- Blog Comments -->
-
-        @if(Auth::check())
-
-            <!-- Comments Form -->
-            <div class="well">
-
-                <h4>Leave a Comment:</h4>
-                
-                {!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
-
-                <input type="hidden" name="post_id" value="{{$post->id}}">
-
-
-                    <div class='form-group'>
-                    {!! Form::label('body', 'Body:') !!}
-                    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
-                    </div>
-                    <div class='form-group'>
-                    {!! Form::submit('Submit Comment', ['class'=>'btn btn-primary']) !!}
-                    </div>
-                {!! Form::close() !!}
-
-            </div>
-        @endif
-
-            <hr>
-
-
-            <!-- Posted Comments -->
-
-        {{-- @if(count($postComments) > 0)
-        
-
-            <!-- Comment -->
-            @foreach ($post->comments as $comment)
-            @if ($comment->is_active == 1)
-                
-            <div class="media">
-                <a class="pull-left" href="#">
-                <img height="60" width="60" class="media-object" src="{{Auth::user() && Auth::user()->name == $comment->author ? Auth::user()->gravatar : "/images/icon-user-default.png"}}" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">{{$comment->author}}
-                        <small>{{$comment->created_at->diffForHumans()}}</small>
-                    </h4>
-                   <p>{{$comment->body}}</p>
-                
-
-                @if(count($comment->replies) > 0)
-
-                    @foreach ($comment->replies as $reply)
-                        
-                        @if ($reply->is_active == 1 && Auth::user())
-
-                            <!-- Nested Comment -->
-                            <div id="nested-comment" class="media">
-                                <a class="pull-left" href="#">
-                                <img class="media-object" height="64" src="{{$reply->photo}}" alt="">
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading">{{$reply->author}}
-                                        <small>{{$reply->created_at->diffForHumans()}}</small>
-                                    </h4>
-                                    <p>{{$reply->body}}</p>
-                                </div>
-
-                                    <div class="comment-reply-container">
-                        
-                                            <button class="pull-right btn btn-primary toggle-reply">Reply</button>
-
-                                            <div class="comment-reply col-sm-6" style="display:none;">
-                                                
-                                                {!! Form::open(['method'=>'POST', 'action'=>'CommentRepliesController@createReply']) !!}
-
-                                                <input type="hidden" name="comment_id" value="{{$comment->id}}">
-            
-                                                    <div class='form-group'>
-                                                    {!! Form::label('body', 'Body:') !!}
-                                                    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>1]) !!}
-                                                    </div>
-                                                    <div class='form-group'>
-                                                    {!! Form::submit('Submit', null, ['class'=>'btn btn-primary']) !!}
-                                                    </div>
-                                                {!! Form::close() !!}
-
-                                            </div>
-                                    </div>
-                            </div>
-                            <!-- End Nested Comment -->
-
-                        {{-- @else 
-                            <h3>No Replies</h3>    --}}
-{{--
-                        @endif
-
-                    @endforeach
-
-                @endif
-
-
-                </div>
-            </div>
-            @endif  {{-- if comment is_active   --}}
-{{--
-            @endforeach
-
-        @endif  --}}
-
-        </div>  <!-- col-md-8 -->
-
-            @include('includes.front-sidebar')
-
-        </div> <!-- ROW -->
-
-                 <!-- Pagination -->
-                 <div class="row text-center">
-                     {{$posts->render()}}
-                 </div>
+<!-- Pagination -->
+<div class="row text-center">
+    <!-- {{$posts->render()}} -->
+     {{ $posts->links() }} 
+</div>
 
 @stop
 

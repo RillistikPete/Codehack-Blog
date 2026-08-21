@@ -31,24 +31,6 @@
                             </div>
                         </div>
 
-                        {{-- attempt to include role in register --}}
-                        {{-- <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
-    
-                                <div class="col-md-6">
-                                    
-                                    {!! Form::select('role_id', [2 => 'author', 3 => 'subscriber'], ['class'=>'form-control ']) !!}
-
-                                    <input id="role" type="text" class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}" name="role" value="{{ old('role') }}" required autofocus>
-    
-                                    @if ($errors->has('role'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('role') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div> --}}
-
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 

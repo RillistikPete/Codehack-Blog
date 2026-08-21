@@ -70,9 +70,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('front/home', [
-            'posts' => Post::with(['photo', 'category'])
-            // add when uncommenting comments in home.blade.php
-            //'posts' => Post::with(['photo', 'category', 'comments.replies'])
+            'posts' => Post::with(['photo', 'category', 'comments.replies'])
                         ->orderBy('created_at', 'desc')
                         ->paginate(9),
             'user'       => Auth::user(),
@@ -133,7 +131,7 @@ class HomeController extends Controller
 
         return view('post', [
             'post'       => $post,
-            'comments'   => $post->comments()->where('is_active', 1)->get(),
+            'comments'   => $post->comments()->with('replies')->where('is_active', 1)->get(), //eager load replies
             'categories' => Category::all(),
             'user'       => Auth::user(),
         ]);

@@ -6,28 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PostsCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            // 'title'=>'required',
-            // 'category_id'=>'required',
-            // 'photo_id'=>'required',
-            // 'body'=>'required'
+            'title'       => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'body'        => 'required|string',
+            'photo_id'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ];
     }
 }

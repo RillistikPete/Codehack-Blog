@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CommentReply;
 use App\Models\Comment;
-use Auth;
 
 
 class CommentRepliesController extends Controller
@@ -20,15 +19,6 @@ class CommentRepliesController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,33 +26,31 @@ class CommentRepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Comment $comment)
     {
-        //
-    }
-    
-    public function createReply(Request $request){
+                dd('req', $request);
 
-        $user = Auth::user();
+        dd('comment', $comment);
+        $user = auth()->user();
 
-        //Create this data object so you can pass them in and 
-        // don't have to create fields for them in the form:
-        
-            $data = [
+        $validated = $request->validate([
+            'body' => 'required|string|max:1000',
+        ]);
 
-            'comment_id' => $request->comment_id,
-            'author' => $user->name,
-            'email' => $user->email,
-            'photo' => $user->photo->file,
-            'body' => $request->body
+        $isAdmin = $user->isAdmin();
 
-        ];
+        $comment->replies()->create([
+            'body'      => $validated['body'],
+            'author'    => $user->name,
+            'email'     => $user->email,
+            'photo'     => $user->photo?->file,
+            'is_active' => $isAdmin ? 1 : 0,
+        ]);
+        dd('comment', $comment);
 
-        CommentReply::create($data);
-
-        $request->session()->flash('reply_message', 'Your reply has been submitted and is awaiting moderation');
-        
-        return redirect()->back();
+        return back()->with('reply_message', $isAdmin
+            ? 'Reply posted.'
+            : 'Your reply has been submitted and is awaiting moderation.');
     }
 
     /**
@@ -98,9 +86,16 @@ class CommentRepliesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        CommentReply::findOrFail($id)->update($request->all());
+        // CommentReply::findOrFail($id)->update($request->all());
+        // $request->all() lets a crafted request rewrite the author, email,
+        //  or body from what's meant to be an approve/disapprove button
+        $validated = $request->validate([
+            'is_active' => 'required|in:0,1',
+        ]);
 
-        return redirect()->back();
+        CommentReply::findOrFail($id)->update($validated);
+
+        return back();
     }
     
     /**

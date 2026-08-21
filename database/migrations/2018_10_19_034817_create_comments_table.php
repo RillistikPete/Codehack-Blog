@@ -14,22 +14,14 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
-            //You must add the unsigned to the foreign key field because the integer field
-            // is defined as signed and the foreign key could give you some error relating these two tables.
-            // Make sure these constraints are identical with foreign keys.
-            $table->integer('post_id')->unsigned()->index()->nullable();
-            $table->integer('is_active')->default(0);
+            $table->id();
+            $table->foreignId('post_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->unsignedTinyInteger('is_active')->default(0);
             $table->string('author');
             $table->string('email');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->text('body');
             $table->timestamps();
-
-            //So this deletes all comments on a post if that post is deleted!
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-
-
         });
     }
 

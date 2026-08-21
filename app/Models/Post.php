@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 // for AdminPostsController@post to be able to find by slug
@@ -59,7 +60,7 @@ class Post extends Model
     }
 
     /*
-    for understanding above accessor:
+    for understanding getObjUrlAttribute accessor:
     Eloquent resolves it by naming convention:
 
     $post->obj_url
@@ -70,7 +71,7 @@ class Post extends Model
 
     if you ever need the untouched database value, $post->getRawOriginal('obj_url') bypasses the accessor
     
-    laravel 9 added this syntax equivalent:
+    laravel 9 equivalent:
     protected function objUrl(): Attribute
     {
         return Attribute::get(fn ($value) => $value ?: // derive );
@@ -88,6 +89,21 @@ class Post extends Model
 
     public function photoPlaceholder() {
         return "/images/placeholder.jpg";
+    }
+
+    // For CommonMark texteditor:
+    public function getBodyHtmlAttribute(): string
+    {
+        return Str::markdown($this->body ?? '', [
+            'html_input'         => 'strip', // prevent script embed
+            'allow_unsafe_links' => false,   // block javascript: urls
+        ]);
+    }
+
+    // allows for {{ $post->excerpt }} to output a short summary of post
+    public function getExcerptAttribute(): string
+    {
+        return Str::limit(trim(strip_tags($this->body_html)), 300);
     }
 
 }

@@ -1,119 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin</title>
+    <title>Admin — {{ config('app.name') }}</title>
 
-    <!-- Bootstrap Core CSS -->
-    
-    {{-- FOR SOME REASON, WHEN I EXCLUDE THE FOLLOWING STYLES, IT WORKS AS IT SHOULD. MUST LOAD APP.CSS SOMEHOW --}}
-    {{-- <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css"> --}}
-
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
-    
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    {{-- [if lt IE 9]> --}}
-    {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
-    {{-- <![endif]--> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @vite('resources/css/admin.css')
 
     @yield('styles')
-
-
-
 </head>
 
 <body id="admin-page">
+    <div id="wrapper">
+        <!-- Navbar -->
+        @include('includes.admin-nav')
 
-<div id="wrapper">
-
-    <!-- Navigation -->
-    @include('includes.admin-nav')
-    <!-- Navigation -->
-
-
-
-
-
-    <div class="navbar-default sidebar" role="navigation">
-        <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
-                <li>
-                    <a href="/profile"><i class="fa fa-dashboard fa-fw"></i>Profile</a>
-                </li>
-
-
-
-
-                <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="">All Posts</a>
-                        </li>
-
-                        <li>
-                            <a href="">Create Post</a>
-                        </li>
-
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
-
-
-
-
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-
-
-
-<!-- Page Content -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header"></h1>
-
-                @yield('content')
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">
+                            <i class="fa fa-dashboard fa-fw"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{ route('posts.index') }}">All Posts</a></li>
+                            <li><a href="{{ route('posts.create') }}">Create Post</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{ route('users.index') }}">All Users</a></li>
+                            <li><a href="{{ route('users.create') }}">Create User</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('categories.index') }}"><i class="fa fa-tags fa-fw"></i> Categories</a></li>
+                    <li><a href="{{ route('comments.index') }}"><i class="fa fa-comments fa-fw"></i> Comments</a></li>
+                    <li><a href="{{ route('media.index') }}"><i class="fa fa-picture-o fa-fw"></i> Media</a></li>
+                </ul>
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-</div>
-<!-- /#page-wrapper -->
 
-</div>
-<!-- /#wrapper -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                @include('flash::message')
+                <div class="row">
+                    <div class="col-lg-12">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /#wrapper -->
 
-<!-- jQuery -->
-<script src="{{asset('js/libs.js')}}"></script>
-
-
-@yield('scripts')
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.9/metisMenu.min.js"></script>
+    <script>
+        $(function () { $('#side-menu').metisMenu(); });
+    </script>
+    @yield('scripts')
 
 </body>
-
 </html>

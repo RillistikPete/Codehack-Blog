@@ -85,8 +85,9 @@ return [
     | subdomain under which all of the Fortify routes will be available.
     |
     */
-
-    'prefix' => '',
+    
+    //Fortify's routes become /auth/login
+    'prefix' => 'auth',
 
     'domain' => null,
 

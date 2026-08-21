@@ -20,57 +20,52 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
                         @foreach ($replies as $reply)
+                            <td>{{$reply->id}}</td>
+                            <td>{{$reply->author}}</td>
+                            <td>{{$reply->email}}</td>
+                            <td>{{$reply->body}}</td>
+                            <td>
+                                @if ($reply->comment?->post)
+                                    <a href="{{ route('home.post', $reply->comment->post->slug) }}">View Post</a>
+                                @endif
+                            </td>
 
-                        <td>{{$reply->id}}</td>
-                        <td>{{$reply->author}}</td>
-                        <td>{{$reply->email}}</td>
-                        <td>{{$reply->body}}</td>
-                        <td><a href="{{route('home.post', $reply->comment->post->id)}}">View Post</td>
+                            <td>
+                                @if ($reply->is_active == 1)
+                                    <form method="POST" action="{{ route('replies.update', $reply->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="0">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-warning">Disapprove</button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('replies.update', $reply->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="1">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </div>
+                                    </form>
+                                @endif
+                            </td>
 
-                        <td>
-
-                            @if ($reply->is_active == 1)
-
-                            {!! Form::open(['method'=>'PATCH', 'action'=>['CommentRepliesController@update', $reply->id]]) !!}
-                                
-                                <input type="hidden" name="is_active" value="0">
-                                <div class='form-group'>
-                                  {!! Form::submit('Disapprove', ['class'=>'btn btn-warning']) !!}
-                                </div>
-                            {!! Form::close() !!}
-                            
-                            @else 
-                            
-                  
-                            {!! Form::open(['method'=>'PATCH', 'action'=>['CommentRepliesController@update', $reply->id]]) !!}
-                                
-                                <input type="hidden" name="is_active" value="1">
-                                <div class='form-group'>
-                                  {!! Form::submit('Approve', ['class'=>'btn btn-success']) !!}
-                                </div>
-                            {!! Form::close() !!}
-
-                            @endif
-
-                        </td>
-
-                        <td>
-
-                            {!! Form::open(['method'=>'DELETE', 'action'=>['CommentRepliesController@destroy', $reply->id]]) !!}
-                                
-                                <div class='form-group'>
-                                  {!! Form::submit('Delete', ['class'=>'btn btn-danger']) !!}
-                                </div>
-                            {!! Form::close() !!}
-
-                        </td>
+                            <td>
+                                <form method="POST" action="{{ route('replies.destroy', $reply->id) }}"
+                                    onsubmit="return confirm('Delete this reply?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        @endforeach
                     </tr>
-
-                    @endforeach
-
-
-
                     <tr>
                         <td></td>
                         <td></td>

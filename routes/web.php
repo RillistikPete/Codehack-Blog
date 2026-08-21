@@ -22,12 +22,14 @@ Route::get('/category/{id}', [HomeController::class, 'categPosts'])->name('home.
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submitContactEmail'])->name('contact.submit');
 
-Route::post('posts/{post}/comments', [PostCommentsController::class, 'store'])
-    ->name('postcomments.store');
+// prevents anyone from adding comment or comm reply
+Route::middleware('auth')->group(function () {
+    Route::post('posts/{post}/comments', [PostCommentsController::class, 'store'])
+        ->name('postcomments.store');
 
-Route::post('comments/{comment}/replies', [CommentRepliesController::class, 'createReply'])
-    ->name('replies.create');
-
+    Route::post('comments/{comment}/replies', [CommentRepliesController::class, 'store'])
+        ->name('replies.create');
+});
 /* ---------------- Admin ---------------- */
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
@@ -47,7 +49,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->only(['index', 'show', 'edit', 'update', 'destroy'])->names('comments');
 
     Route::resource('replies', CommentRepliesController::class)
-        ->only(['index', 'show', 'edit', 'update', 'destroy'])->names('replies');
+        ->only(['store', 'show', 'update', 'destroy'])->names('replies');
 
     // media has no edit/update
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');

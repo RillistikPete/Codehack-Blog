@@ -7,7 +7,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
+                        <!-- url('/login') hardcodes a path - use route() -->
                         <!--  old way (still works):  {!! csrf_field() !!} -->
                         @csrf
                         

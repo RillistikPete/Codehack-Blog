@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('includes.tinyeditor')
+    @include('includes.markdown-editor')
 
     <h1>Edit Post</h1>
 
@@ -46,7 +46,7 @@
 
                 <div class="form-group">
                     <label for="body">Description:</label>
-                    <textarea name="body" id="tinyeditor" class="form-control">{{ old('body', $post->body) }}</textarea>
+                    <textarea name="body" id="markdown-editor" class="form-control" rows="20">{{ old('body', $post->body) }}</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update</button>

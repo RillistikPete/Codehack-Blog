@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
 use App\Models\Comment;
 use App\Models\CommentReply;
 use App\Models\Post;
@@ -41,35 +40,39 @@ class PostCommentsController extends Controller
     */
 
 
-    // REFACTORED: 
+    /*
+    REFACTORED: 
+    OLD - Comment::create()	            User hidden input (post_id)
+    NEW - $post->comments()->create()	    Your application (the $post)
+    
+    Explained:
+    $comment = new Comment($attributes);
+    $comment->setAttribute('post_id', $post->getKey());  // grabs FK from inferred parent
+    $comment->save();
 
-  // ******CHECK THIS LATER TO ENSURE WORKING **************
-
-    //OLD - Comment::create()	            User hidden input (post_id)
-    //NEW - $post->comments()->create()	    Your application (the $post)
+    So post_id is assigned in PHP, before the INSERT ever leaves your app. The database then checks it against the constraint. 
+    */
     public function store(Request $request, Post $post)
     {
         $user = auth()->user();
 
-        // Validate form (home blade)
         $validated = $request->validate([
-            'post_id' => 'required|exists:posts,id',
             'body' => 'required|string|max:1000',
         ]);
 
-        // merge validated + server-side fields
-        $data = array_merge($validated, [
-            'author' => $user->name,
-            'email' => $user->email,
-            'photo' => $user->photo ? $user->photo->file : null,
+        $isAdmin = $user->isAdmin();
+
+        $post->comments()->create([
+            'body'      => $validated['body'],
+            'author'    => $user->name,
+            'email'     => $user->email,
+            'photo'     => $user->photo?->file,
+            'is_active' => $isAdmin ? 1 : 0,
         ]);
 
-        Comment::create($data);
-
-        return back()->with(
-            'comment_message',
-            'Your message has been submitted and is awaiting moderation.'
-        );
+        return back()->with('comment_message', $isAdmin
+            ? 'Comment posted.'
+            : 'Your message has been submitted and is awaiting moderation.');
     }
 
 
@@ -107,7 +110,11 @@ class PostCommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Comment::findOrFail($id)->update($request->all());
+        // validate is_active so a crafted request can't rewrite a comment's body from the admin endpoint
+        $validated = $request->validate([
+            'is_active' => 'required|in:0,1',
+        ]);
+        Comment::findOrFail($id)->update($validated);
         return redirect()->back();
     }
 
