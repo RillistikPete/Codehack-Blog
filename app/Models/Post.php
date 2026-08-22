@@ -46,21 +46,28 @@ class Post extends Model
         return $this->belongsTo(Photo::class);
     }
 
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function photoPlaceholder() {
+        return "/images/placeholder.jpg";
+    }
+
     // accessor
     public function getObjUrlAttribute($value): ?string
     {
-        // value is the stored column
-        if ($value) {
-            return $value;
-        }
-
-        $name = $this->photo?->getRawOriginal('file');
-
-        return $name ? Storage::disk('s3')->url($name) : null;
+        return $value ?: $this->photo?->url;
     }
 
     /*
     for understanding getObjUrlAttribute accessor:
+    The obj_url column stays null and the URL is computed on read. It remains a real column purely as an override.
+
     Eloquent resolves it by naming convention:
 
     $post->obj_url
@@ -78,18 +85,6 @@ class Post extends Model
     }
     */
 
-    //And if you ever need the untouched database value, $post->getRawOriginal('obj_url')
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function comments() {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function photoPlaceholder() {
-        return "/images/placeholder.jpg";
-    }
 
     // For CommonMark texteditor:
     public function getBodyHtmlAttribute(): string

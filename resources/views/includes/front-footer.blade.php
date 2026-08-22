@@ -4,7 +4,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                <p>Copyright &copy; G. Forrest Blog {{now()->year}}</p>
+                <p>Copyright &copy; G. Forrest Blog 2019</p>
                 </div>
             </div>
         </footer>

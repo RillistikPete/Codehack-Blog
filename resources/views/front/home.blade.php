@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    @include('flash::message')
+    @include('includes.flash-messages')
 
     <div class="col-md-8">
 

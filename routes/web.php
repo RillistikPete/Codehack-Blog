@@ -46,10 +46,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // store lives on the public route above
     Route::resource('comments', PostCommentsController::class)
-        ->only(['index', 'update', 'destroy'])->names('comments');
+        ->only(['index', 'edit', 'update', 'destroy'])->names('comments');
 
     Route::resource('replies', CommentRepliesController::class)
-        ->only(['index', 'update', 'destroy'])->names('replies');
+        ->only(['index', 'edit', 'update', 'destroy'])->names('replies');
 
     // media has no edit/update
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');

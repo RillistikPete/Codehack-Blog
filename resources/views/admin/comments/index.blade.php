@@ -3,8 +3,13 @@
 @section('content')
 
     @if ($post)
-        <h1>Comments on “{{ $post->title }}”</h1>
-        <p><a href="{{ route('comments.index') }}">&larr; All comments</a></p>
+        <h2>Comments on {{ $post->user?->name }}'s post</h2>
+
+        <blockquote>
+            <a href="{{ route('home.post', $post->slug) }}">{{ $post->title }}</a>
+        </blockquote>
+
+        <p><a href="{{ route('comments.index') }}">&larr; All Comments</a></p>
     @else
         <h1>All Comments</h1>
     @endif
@@ -18,10 +23,11 @@
                     <th>Author</th>
                     <th>Email</th>
                     <th>Comment</th>
+                    <th>Edit</th>
                     <th>Post</th>
                     <th>Replies</th>
                     <th>Status</th>
-                    <th></th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +37,7 @@
                         <td>{{ $comment->author }}</td>
                         <td>{{ $comment->email }}</td>
                         <td>{{ Str::limit($comment->body, 60) }}</td>
+                        <td><a href="{{ route('comments.edit', $comment->id) }}">Edit</a></td>
                         <td>
                             @if ($comment->post)
                                 <a href="{{ route('home.post', $comment->post->slug) }}">View Post</a>

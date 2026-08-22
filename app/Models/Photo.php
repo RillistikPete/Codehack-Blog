@@ -3,24 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
-    //protected $placehold = '/images/placeholder.jpg';
-
-    //ACCESSOR:
-    protected $uploads = '/images/';
-
     protected $fillable = ['file'];
 
-    public function getFileAttribute($photo){
-        return $this->uploads . $photo;
-    }
-
-    // public function showPlaceholdPhoto($photo) {
-    //     return $this->placehold;
-    // }
-    public function lfmPhotosFolder() {
-        return public_path() . '/images/2/picsThatAreCool';
+    public function getUrlAttribute(): string
+    {
+        return Storage::disk('s3')->url($this->file);
     }
 }

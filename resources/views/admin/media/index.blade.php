@@ -5,8 +5,7 @@
 
     <h1>Media</h1>
 
-    {{-- to include flash message upon delete on request form --}}
-    @include('flash::message')
+    @include('includes.flash-messages')
 
     @if($photos)
 
@@ -24,9 +23,6 @@
             <input type="submit" class="btn-primary">
         </div>
 
-    
-
-
     <table class='table table-hover'>
         <thead>
                <tr>
@@ -41,20 +37,18 @@
                     <tr>
                         <td><input class="checkboxes" type="checkbox" name="checkboxArray[]" value="{{$photo->id}}"></td>
                         <td>{{$photo->id}}</td>
-                        <td><img height="50" src="{{$photo->file}}" alt=""/></td>
+                        <td><img height="50" src="{{$photo->url}}" alt=""/></td>
                         <td>{{$photo->created_at ? $photo->created_at : 'no date'}}</td>
                     </tr>
             @endforeach
         </tbody>
     </table> 
 
-    </form> {{-- delete/media --}}
-
+    </form>
 
     @endif 
 
 @section('scripts')
-    
     <script>
 
         $(document).ready(function()
@@ -73,8 +67,6 @@
             });
         });
     </script>
-
 @endsection
-
 
 @stop

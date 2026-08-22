@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\CommentReply;
 use App\Models\Comment;
 use App\Models\Post;
 
-class PostCommentsController extends Controller
+
+class CommentRepliesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,16 +17,16 @@ class PostCommentsController extends Controller
      */
     public function index(Request $request)
     {
-        $post = $request->filled('post')
-            ? Post::find($request->query('post'))
+        $filterComment = $request->filled('comment')
+            ? Comment::with('post')->find($request->query('comment'))
             : null;
 
-        $comments = Comment::with('post')
-            ->when($post, fn ($q) => $q->where('post_id', $post->id))
+        $replies = CommentReply::with('comment.post')
+            ->when($filterComment, fn ($q) => $q->where('comment_id', $filterComment->id))
             ->latest()
             ->paginate(20);
 
-        return view('admin.comments.index', compact('comments', 'post'));
+        return view('admin.replies.index', compact('replies', 'filterComment'));
     }
 
 
@@ -33,22 +35,8 @@ class PostCommentsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-    */
-
-
-    /*
-    REFACTORED: 
-    OLD - Comment::create()	            User hidden input (post_id)
-    NEW - $post->comments()->create()	    Your application (the $post)
-    
-    Explained:
-    $comment = new Comment($attributes);
-    $comment->setAttribute('post_id', $post->getKey());  // grabs FK from inferred parent
-    $comment->save();
-
-    So post_id is assigned in PHP, before the INSERT ever leaves your app. The database then checks it against the constraint. 
-    */
-    public function store(Request $request, Post $post)
+     */
+    public function store(Request $request, Comment $comment)
     {
         $user = auth()->user();
 
@@ -58,7 +46,7 @@ class PostCommentsController extends Controller
 
         $isAdmin = $user->isAdmin();
 
-        $post->comments()->create([
+        $comment->replies()->create([
             'body'      => $validated['body'],
             'author'    => $user->name,
             'email'     => $user->email,
@@ -66,11 +54,10 @@ class PostCommentsController extends Controller
             'is_active' => $isAdmin ? 1 : 0,
         ]);
 
-        return back()->with('comment_message', $isAdmin
-            ? 'Comment posted.'
-            : 'Your message has been submitted and is awaiting moderation.');
+        return back()->with('success', $isAdmin
+            ? 'Reply posted.'
+            : 'Your reply has been submitted and is awaiting moderation.');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -80,7 +67,9 @@ class PostCommentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $reply = CommentReply::with('comment.post')->findOrFail($id);
+
+        return view('admin.replies.edit', compact('reply'));
     }
 
     /**
@@ -92,14 +81,21 @@ class PostCommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // validate is_active so a crafted request can't rewrite a comment's body from the admin endpoint
+        // CommentReply::findOrFail($id)->update($request->all());
+        // $request->all() lets a crafted request rewrite the author, email,
+        //  or body from what's meant to be an approve/disapprove button
         $validated = $request->validate([
             'is_active' => 'required|in:0,1',
+            'author'    => 'sometimes|required|string|max:255',
+            'email'     => 'sometimes|required|email|max:255',
+            'body'      => 'sometimes|required|string|max:1000',
         ]);
-        Comment::findOrFail($id)->update($validated);
-        return redirect()->back();
-    }
 
+        CommentReply::findOrFail($id)->update($validated);
+
+        return back();
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -108,7 +104,9 @@ class PostCommentsController extends Controller
      */
     public function destroy($id)
     {
-        Comment::findOrFail($id)->delete();
+        CommentReply::findOrFail($id)->delete();
+        
         return redirect()->back();
+
     }
 }

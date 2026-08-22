@@ -128,3 +128,7 @@ body {
     color: #123858;
     cursor: pointer;
 }
+
+#flashdiv {
+    margin-top: 10px;
+}

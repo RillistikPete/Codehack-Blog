@@ -10,7 +10,7 @@
   {{-- convert to model, pass in $user, this allows for access --}}
 
     <div class="text-center">
-        <img class="img-rounded" height="200px" src="{{$user->photo ? $user->photo->file : '/images/placeholder.jpg'}}" alt="">
+        <img class="img-rounded" height="200px" src="{{$user->photo ? $user->photo->url : '/images/placeholder.jpg'}}" alt="">
     </div>
     <br>
     <div class="panel-body">

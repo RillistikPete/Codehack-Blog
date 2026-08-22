@@ -7,12 +7,12 @@
     <h1>Edit Post</h1>
 
     <div class="row">
-        <div class="col-sm-6">
-            <img src="{{ $post->photo ? $post->photo->file : $post->photoPlaceholder() }}"
+        <div class="col-sm-8">
+            <img src="{{ $post->photo ? $post->photo->url : $post->photoPlaceholder() }}"
                  alt="" class="img-responsive">
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-8">
 
             <form method="POST" action="{{ route('posts.update', $post->id) }}"
                   enctype="multipart/form-data">
@@ -48,16 +48,9 @@
                     <label for="body">Description:</label>
                     <textarea name="body" id="markdown-editor" class="form-control" rows="20">{{ old('body', $post->body) }}</textarea>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
-
-            <form method="POST" action="{{ route('posts.destroy', $post->id) }}"
-                  onsubmit="return confirm('Delete this post?');">
-                @csrf
-                @method('DELETE')
+                
                 <div class="form-group">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
 

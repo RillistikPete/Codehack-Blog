@@ -2,9 +2,19 @@
 
 @section('content')
 
-    @if ($comment)
-        <h1>Replies to {{ $comment->author }}'s comment</h1>
-        <p class="text-muted">{{ Str::limit($comment->body, 120) }}</p>
+    @if ($filterComment)
+        <h2>Replies to {{ $filterComment->author }}'s comment</h2>
+
+        @if ($filterComment->post)
+            <p class="text-muted">
+                on <a href="{{ route('home.post', $filterComment->post->slug) }}">{{ $filterComment->post->title }}</a>
+            </p>
+        @endif
+
+        <blockquote>
+            <p>{{ Str::limit($filterComment->body, 300) }}</p>
+        </blockquote>
+
         <p><a href="{{ route('replies.index') }}">&larr; All replies</a></p>
     @else
         <h1>All Replies</h1>
@@ -18,8 +28,8 @@
                     <th>Id</th>
                     <th>Author</th>
                     <th>Email</th>
-                    <th>Reply</th>
-                    <th>Post</th>
+                    <th>Comment</th>
+                    <th>Edit</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
@@ -31,13 +41,7 @@
                         <td>{{ $reply->author }}</td>
                         <td>{{ $reply->email }}</td>
                         <td>{{ Str::limit($reply->body, 60) }}</td>
-                        <td>
-                            @if ($reply->comment?->post)
-                                <a href="{{ route('home.post', $reply->comment->post->slug) }}">View Post</a>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
+                        <td><a href="{{ route('replies.edit', $reply->id) }}">Edit Reply</a></td>
                         <td>
                             @if ($reply->is_active == 1)
                                 <form method="POST" action="{{ route('replies.update', $reply->id) }}">

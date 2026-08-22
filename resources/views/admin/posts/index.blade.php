@@ -1,9 +1,6 @@
 @extends('layouts.admin')
 
-
-
 @section('content')
-    
 
     <h1>Posts</h1>
     <hr>
@@ -21,6 +18,7 @@
                 <th>Comments</th>
                 <th>Created</th>
                 <th>Updated</th>
+                <th>Delete</th>
                 </tr>
             </thead>
         <tbody>
@@ -36,10 +34,19 @@
                     <td><a href="{{route('posts.edit', $post->id)}}">Edit</a></td>
                     <td>{{$post->category_id ? $post->category->name : 'Uncategorized'}}</td>
                     <td><a href="{{route('home.post', $post->slug)}}">View Post</td>
-                    <td><a href="{{route('comments.index', $post->id)}}">View Comments</td>
-
+                    <td><a href="{{ route('comments.index', ['post' => $post->id]) }}">View Comments</a></td>
                     <td>{{$post->created_at->diffForHumans()}}</td>
                     <td>{{$post->updated_at->diffForHumans()}}</td>
+                    <td>
+                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}"
+                            onsubmit="return confirm('Delete this post?');">
+                            @csrf
+                            @method('DELETE')
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </td>
                 </tr>
             
             @endforeach

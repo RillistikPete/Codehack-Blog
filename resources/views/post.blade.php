@@ -37,13 +37,6 @@
 
                 <hr><hr>
 
-                @if(Session::has('comment_message'))
-                    {{session('comment_message')}}
-                @endif
-                @if (session('reply_message'))
-                    <div class="alert alert-info">{{ session('reply_message') }}</div>
-                @endif
-
         <!-- Blog Comments -->
         @if(Auth::check())
             <!-- Comments Form -->
@@ -74,12 +67,10 @@
             <!-- Comment -->
             @foreach ($comments as $comment)
                 <div class="media">
-                    <a class="pull-left" href="#">
-                        <img height="64" class="media-object"
-                            src="{{ Auth::user() && Auth::user()->name == $comment->author
-                                    ? Auth::user()->gravatar
-                                    : '/images/icon-user-default.png' }}" alt="">
-                    </a>
+                    <img height="64" class="media-object pull-left"
+                        src="{{ Auth::user() && Auth::user()->name == $comment->author
+                                ? Auth::user()->gravatar
+                                : '/images/icon-user-default.png' }}" alt="">
                     <div class="media-body">
                         <h4 class="media-heading">{{ $comment->author }}
                             <small>{{ $comment->created_at->diffForHumans() }}</small>
@@ -89,10 +80,10 @@
                         {{-- Replies --}}
                         @forelse ($comment->replies->where('is_active', 1) as $reply)
                             <div class="media nested-comment">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object" height="64"
-                                        src="{{ $reply->photo ?: '/images/icon-user-default.png' }}" alt="">
-                                </a>
+                                <img height="36" class="media-object pull-left"
+                                    src="{{ Auth::user() && Auth::user()->name == $reply->author
+                                            ? Auth::user()->gravatar
+                                            : '/images/icon-user-default.png' }}" alt="">
                                 <div class="media-body">
                                     <h4 class="media-heading">{{ $reply->author }}
                                         <small>{{ $reply->created_at->diffForHumans() }}</small>

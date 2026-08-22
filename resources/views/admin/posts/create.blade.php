@@ -30,8 +30,9 @@
                 <label for="body">Description:</label>
                 <textarea name="body" id="markdown-editor" class="form-control" rows="20">{{ old('body') }}</textarea>
             </div>
-
-            <button type="submit" class="btn btn-primary">Create</button>
+            <div class='form-group'>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
         </form>
     </div>
     
