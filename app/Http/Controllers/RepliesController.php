@@ -8,7 +8,7 @@ use App\Models\Comment;
 use App\Models\Post;
 
 
-class CommentRepliesController extends Controller
+class RepliesController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
 
 class AdminCategoriesController extends Controller
 {
@@ -28,7 +29,7 @@ class AdminCategoriesController extends Controller
     {
         Category::create($request->all());
         
-        return redirect('/admin/categories');
+        return redirect()->route('categories.index')->with('success', "Category created.");
     }
 
     /**
@@ -59,14 +60,13 @@ class AdminCategoriesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $category = Category::findOrFail($id);
         $category->update($request->all());
 
-        return redirect('/admin/categories');
+        return redirect()->route('categories.index')->with('success', "Category updated.");
     }
 
     /**
@@ -79,6 +79,6 @@ class AdminCategoriesController extends Controller
     {
         Category::findOrFail($id)->delete();
 
-        return redirect('/admin/categories');
+        return redirect()->route('categories.index')->with('success', "Category deleted.");
     }
 }

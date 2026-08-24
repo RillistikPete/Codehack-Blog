@@ -17,7 +17,7 @@
         <li>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="btn btn-link" style="padding:15px;text-decoration:none;">
+                <button type="submit" class="btn btn-link">
                     <i class="fa fa-sign-out fa-fw"></i> Logout
                 </button>
             </form>

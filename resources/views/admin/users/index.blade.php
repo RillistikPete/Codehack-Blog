@@ -1,10 +1,6 @@
 
 @extends('layouts.admin')
 
-
-
-
-
 @section('content')
 
 @if(Session::has('deleted_user'))
@@ -28,25 +24,21 @@
             </tr>
             </thead>
         <tbody>
+            @if($users)
 
-        @if($users)
+            @foreach ($users as $user) 
+                <tr>
+                    <td>{{$user->id}}</td>
+                    <td><x-photo :photo="$user->photo" height="50" width="50" /></td>
+                    <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->role->name}}</td>
 
+                    <td>{{$user->is_active == 1 ? 'Active' : 'Offline' }}</td>
 
-            @foreach ($users as $user)
-                
-            <tr>
-                <td>{{$user->id}}</td>
-                <td><img height="50" width="50" src="{{$user->photo ? $user->photo->url : '/images/placeholder.jpg'}}" alt=""/></td>
-                <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->role->name}}</td>
-
-                <td>{{$user->is_active == 1 ? 'Active' : 'Offline' }}</td>
-
-                <td>{{$user->created_at->diffForHumans()}}</td>
-                <td>{{$user->updated_at->diffForHumans()}}</td>
-            </tr>
-            
+                    <td>{{$user->created_at->diffForHumans()}}</td>
+                    <td>{{$user->updated_at->diffForHumans()}}</td>
+                </tr>
             @endforeach
 
         @endif

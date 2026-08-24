@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UsersEditRequest extends FormRequest
@@ -21,13 +22,15 @@ class UsersEditRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email'=> 'required',
-            'role_id'=> 'required',
-            'is_active'=> 'required',
+            'name'      => 'required|string|max:255',
+            'email'     => ['required', 'email', Rule::unique('users', 'email')->ignore($this->route('user'))],
+            'role_id'   => 'required|exists:roles,id',
+            'is_active' => 'required|in:0,1',
+            'password'  => 'nullable|min:8|confirmed',
+            'photo_id'  => 'nullable|image|max:5120',
         ];
     }
 }

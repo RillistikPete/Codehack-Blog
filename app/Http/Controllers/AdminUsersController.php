@@ -9,26 +9,25 @@ use App\Models\User;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class AdminUsersController extends Controller
 {
-        /**
-         * Display a listing of the resource.
-         *
-         * @return \Illuminate\Http\Response
-         */
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $users = User::all();
+        $users = User::with(['role', 'photo'])->orderBy('id')->paginate(10);
 
         return view('admin.users.index', compact('users'));
     }
 
-        /**
-         * Show the form for creating a new resource.
-         *
-         * @return \Illuminate\Http\Response
-         */
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         //if you put 'id'/,'name' backwards here it will not order roles the same:
@@ -37,61 +36,36 @@ class AdminUsersController extends Controller
         return view('admin.users.create', compact('roles'));
     }
 
-        /**
-         * Store a newly created resource in storage.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
-         */
-
-        
-        // UsersRequest in Requests! 
-    public function store(UsersRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    // UsersRequest in Requests! 
+    public function store(UsersRequest $request): RedirectResponse
     {
-        if(trim($request->password) == '') {
+        $input = $request->validated();
 
-            $input = $request->except('password');
-        }
-        else {
+        if ($file = $request->file('photo_id')) {
+            $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                . '-' . time() . '.' . $file->getClientOriginalExtension();
 
-            $input = $request->all();
-            $input['password'] = bcrypt($request->password);
-        }
-
-        
-        if($file = $request->file('photo_id'))
-        {
-            $name = time() . $file->getClientOriginalName();
             $file->storeAs('', $name, 's3');
-            $photo = Photo::create(['file'=>$name]); 
-            $input['photo_id'] = $photo->id;
 
+            $photo = Photo::create(['file' => $name]);
+            $input['photo_id'] = $photo->id;
         }
 
-        
         User::create($input);
 
-        return redirect('/admin/users');
-        // return ($request->all());
+        return redirect()->route('users.index')->with('success', 'User created.');
     }
 
-        /**
-         * Display the specified resource.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
-    public function show($id)
-    {
-        return view('admin.users.show');
-    }
-
-        /**
-         * Show the form for editing the specified resource.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     */
     public function edit($id)
     {
         //if it's just finding id, findOrFail will work.  If it's something like 'name' and 'id'
@@ -101,28 +75,22 @@ class AdminUsersController extends Controller
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
-        /**
-         * Update the specified resource in storage.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
-    public function update(UsersEditRequest $request, $id)
+    /**
+     * Update the specified resource in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     */
+    public function update(UsersEditRequest $request, $id): RedirectResponse
     {
-        //include use UsersEditRequest at top
+        // UsersEditRequest
         $user = User::findOrFail($id);
+        $oldPhoto = $user->photo;
+        $input = $request->validated();
 
-        // If no password, do request without it. If not, encrypt it:
-        if(trim($request->password) == '') {
-            $input = $request->except('password');
-        }
-        else {
-            $input = $request->all();
-            //users casts function handles hashing password
+        if (empty($input['password'])) {
+            unset($input['password']);
         }
 
-        //Creates (moves) photo into images folder, updates this 'file' part of request:
         if ($file = $request->file('photo_id'))
         {
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
@@ -135,29 +103,33 @@ class AdminUsersController extends Controller
         }
         
         $user->update($input);
-        redirect()->route('users.index');
+
+        $oldPhoto = $user->photo;
+
+        if ($oldPhoto && $oldPhoto->id !== $user->photo_id) {
+            Storage::disk('s3')->delete($oldPhoto->file);
+            $oldPhoto->delete();
+        }
+
+        return redirect()->route('users.index')->with('success', 'User updated.');
     }
 
-        /**
-         * Remove the specified resource from storage.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        // Illuminate\Support\Facades\Session;
         $user = User::findOrFail($id);
 
-        // Delete file from images folder:
-        // unlink( 'path-to-public' . $user->photo->file);
-        unlink(public_path() . $user->photo->file);
+        if ($user->photo) {
+            Storage::disk('s3')->delete($user->photo->file);
+            $user->photo->delete();
+        }
+
         $user->delete();
 
-        Session::flash('deleted_user', 'User has been deleted.');
-
-        return redirect('/admin/users');
-
-
+        return redirect()->route('users.index')->with('success', 'User deleted.');
     }
 }

@@ -5,11 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUsersController;
-use App\Http\Controllers\AdminPostsController;
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AdminCategoriesController;
 use App\Http\Controllers\AdminMediaController;
-use App\Http\Controllers\PostCommentsController;
-use App\Http\Controllers\CommentRepliesController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\RepliesController;
 
 /* ---------------- Public ---------------- */
 
@@ -24,10 +24,10 @@ Route::post('/contact', [ContactController::class, 'submitContactEmail'])->name(
 
 // prevents anyone from adding comment or comm reply
 Route::middleware('auth')->group(function () {
-    Route::post('posts/{post}/comments', [PostCommentsController::class, 'store'])
-        ->name('postcomments.store');
+    Route::post('posts/{post}/comments', [CommentsController::class, 'store'])
+        ->name('comments.store');
 
-    Route::post('comments/{comment}/replies', [CommentRepliesController::class, 'store'])
+    Route::post('comments/{comment}/replies', [RepliesController::class, 'store'])
         ->name('replies.store');
 });
 /* ---------------- Admin ---------------- */
@@ -36,7 +36,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::resource('posts', AdminPostsController::class)->names('posts');
+    Route::resource('posts', PostsController::class)->names('posts');
     Route::resource('users', AdminUsersController::class)->names('users');
 
     // no create() method on this controller
@@ -45,16 +45,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->except(['create'])->names('categories');
 
     // store lives on the public route above
-    Route::resource('comments', PostCommentsController::class)
+    Route::resource('comments', CommentsController::class)
         ->only(['index', 'edit', 'update', 'destroy'])->names('comments');
 
-    Route::resource('replies', CommentRepliesController::class)
+    Route::resource('replies', RepliesController::class)
         ->only(['index', 'edit', 'update', 'destroy'])->names('replies');
 
     // media has no edit/update
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
     Route::get('media/create', [AdminMediaController::class, 'create'])->name('media.create');
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
-    Route::delete('media/bulk', [AdminMediaController::class, 'deleteMedia'])->name('media.bulk-delete');
+    Route::delete('media/bulk', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulk-destroy');
     Route::delete('media/{id}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
 });

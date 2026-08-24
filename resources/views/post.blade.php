@@ -43,7 +43,7 @@
             <div class="well">
                 <h4>Leave a Comment:</h4>
                 
-                <form method="POST" action="{{ route('postcomments.store', $post->id) }}">
+                <form method="POST" action="{{ route('comments.store', $post->id) }}">
                     @csrf
                     <div class="form-group">
                         <label for="body">Body:</label>
@@ -66,7 +66,7 @@
 
             <!-- Comment -->
             @foreach ($comments as $comment)
-                <div class="media">
+                <div class="media well">
                     <img height="64" class="media-object pull-left"
                         src="{{ Auth::user() && Auth::user()->name == $comment->author
                                 ? Auth::user()->gravatar

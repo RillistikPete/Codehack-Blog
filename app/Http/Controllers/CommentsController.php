@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Post;
 
-class PostCommentsController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -104,7 +104,7 @@ class PostCommentsController extends Controller
 
         Comment::findOrFail($id)->update($validated);
         // back() preserves the ?post= filter when you approve from filtered index
-        return back()->with('success', 'Comment updated.');
+        return redirect()->route('comments.index')->with('success', 'Comment updated.');
     }
 
     /**

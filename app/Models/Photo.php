@@ -13,4 +13,14 @@ class Photo extends Model
     {
         return Storage::disk('s3')->url($this->file);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

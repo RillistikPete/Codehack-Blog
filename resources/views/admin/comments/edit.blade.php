@@ -17,7 +17,6 @@
 
     <div class="row">
         <div class="col-sm-8">
-
             <form method="POST" action="{{ route('comments.update', $comment->id) }}">
                 @csrf
                 @method('PATCH')
@@ -46,17 +45,16 @@
                 <button type="submit" class="btn btn-primary">Update Comment</button>
                 <a href="{{ route('comments.index') }}" class="btn btn-default">Cancel</a>
             </form>
-
-            <hr>
-
+        </div>
+        <div class="col-sm-8 move-right">
             <form method="POST" action="{{ route('comments.destroy', $comment->id) }}"
-                  onsubmit="return confirm('Deleting this comment will delete all its replies. Are you sure?');">
-                @csrf
-                @method('DELETE')
+                onsubmit="return confirm('Deleting this comment will delete all its replies. Are you sure?');">
+                    @csrf
+                    @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete Comment</button>
             </form>
-
         </div>
+        <hr>
 
         <div class="col-sm-4">
             <h4>Replies ({{ $comment->replies->count() }})</h4>

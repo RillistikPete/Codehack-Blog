@@ -30,6 +30,10 @@
     border-top: 0;
 }
 
+.move-right {
+    margin-left: auto;
+    margin-top: 20px;
+}
 
 .table-user-information > tbody > tr > td {
     border-top: 0;

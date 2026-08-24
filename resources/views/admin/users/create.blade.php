@@ -41,6 +41,11 @@
         </div>
 
         <div class="form-group">
+            <label for="password_confirmation">Confirm Password:</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+        </div>
+
+        <div class="form-group">
             <label for="photo_id">File:</label>
             <input type="file" name="photo_id" id="photo_id" class="form-control">
         </div>
