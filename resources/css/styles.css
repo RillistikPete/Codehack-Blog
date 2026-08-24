@@ -56,12 +56,21 @@ body {
     margin-bottom:36px !important;
 }
 
-/* navbar */
+.page-content {
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    padding: 20px 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
 
-.navbar {
-    background-color: slategray;
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
+/* ---- navbar: one look for both layouts ---- */
+.navbar,
+.navbar.navbar-inverse,
+.navbar.navbar-default.navbar-static-top {
+    background-color: #49576D;
+    border: none;
     box-shadow: 0 8px 6px -6px #999;
 }
 
@@ -73,34 +82,63 @@ body {
     border-radius: 0;
 }
 
-#usernameAdmin a {
-    color: white;
+/* every nav item in either navbar */
+.navbar.navbar-inverse .navbar-nav > li > a,
+.navbar.navbar-inverse .navbar-nav > li > a:focus,
+.navbar.navbar-inverse .navbar-nav > li .btn-link,
+.navbar.navbar-default .navbar-nav > li > a,
+.navbar-top-links > li > a,
+.navbar-top-links .btn-link,
+.navbar .navbar-brand {
+    color: #fff;
     font-size: 16px;
     text-decoration: none;
-    padding-top: 10px;
 }
-#usernameAdmin a:hover {
-    color: #123858;
-    cursor: pointer;
+
+.navbar.navbar-inverse .navbar-nav > li > a:hover,
+.navbar.navbar-inverse .navbar-nav > li .btn-link:hover,
+.navbar-top-links > li > a:hover,
+.navbar-top-links .btn-link:hover,
+.navbar .navbar-brand:hover {
+    color: #cbd6e2;
     text-decoration: none;
 }
-#usernm {
-    color:white;
-    padding-right:20px;
+
+.navbar .navbar-nav > li > form,
+.navbar-top-links > li > form {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.navbar .navbar-nav > li .btn-link,
+.navbar-top-links > li .btn-link {
+    padding: 15px;
+    margin: 0;
+    border: 0;
+    background: none;
     font-size: 16px;
+    line-height: 20px;
+    vertical-align: baseline;
 }
 
-#logoutBtn {
-    
+.navbar .navbar-nav > li .btn-link:focus,
+.navbar-top-links > li .btn-link:focus {
+    outline: none;
+    box-shadow: none;
 }
 
-#blogHome {
-    color: white;
+.navbar .navbar-nav > li > a.frontnav-username,
+.navbar .navbar-nav > li > a.frontnav-username:hover,
+.navbar .navbar-nav > li > a.frontnav-username:focus {
+    color: #fff;
+    background: none;
+    cursor: default;
+    text-decoration: none;
 }
 
-#blogHome:hover {
-    color: #123858;
-    cursor: pointer;
+.navbar-default .navbar-brand {
+    color: white !important;
 }
 
 .loginRegLink {

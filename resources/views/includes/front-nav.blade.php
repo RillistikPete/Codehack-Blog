@@ -8,12 +8,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" id="blogHome" href="/">Blog Home</a>
-            {{-- <a class="navbar-brand" style="margin-left:12px;" href="/post">Create Post</a> --}}
+            <a class="navbar-brand" href="/">Blog Home</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul id="usernameAdmin" class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right">
                 @guest
                     <li>
                         <a class="loginRegLink" href="{{route('login')}}">Login</a>
@@ -24,26 +23,17 @@
                 @endguest
 
                 @auth
-                    <li>
-                        <h4 id="usernm" style="color:white;padding-right:20px;">{{ Auth::user()->name }}</h4>
-                    </li>
+                    <li><a class="frontnav-username"><i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }}</a></li>
+
                     @if (Auth::user()->isAdmin())
-                        <li>
-                            <!-- inline style needed bc h4 inside ul's "nav" fights bootstrap 3's navbar css -->
-                            <h4 style="padding-right:20px;"> 
-                                <a href="{{ route('admin.dashboard') }}">Admin</a>
-                            </h4>
-                        </li>
+                        <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Admin</a></li>
                     @endif
+
                     <li>
-                        <h4>
-                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" id="logoutBtn" class="btn btn-link">
-                                    Logout
-                                </button>
-                            </form>
-                        </h4>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-link"><i class="fa fa-sign-out fa-fw"></i> Logout</button>
+                        </form>
                     </li>
                 @endauth
             </ul>

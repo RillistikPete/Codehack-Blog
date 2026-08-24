@@ -12,16 +12,16 @@
 
 <!-- TOP NAVIGATION -->
 <ul class="nav navbar-top-links navbar-right">
-    <li class="dropdown">
-        <i class="fa fa-user fa-fw"></i> {{Auth::user()->name}} </i>
-        <li>
-            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-link">
-                    <i class="fa fa-sign-out fa-fw"></i> Logout
-                </button>
-            </form>
-        </li>
+    <li>
+        <i class="fa fa-user fa-fw"></i> {{Auth::user()->name}}
+    </li>
+    <li>
+        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-link">
+                <i class="fa fa-sign-out fa-fw"></i> Logout
+            </button>
+        </form>
     </li>
 </ul>
 

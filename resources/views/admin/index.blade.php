@@ -6,7 +6,7 @@
 @section('content')
 
 
-    <h1>Admin</h1>
+    <h1>Administration</h1>
 
     <canvas id="myChart"></canvas>
 

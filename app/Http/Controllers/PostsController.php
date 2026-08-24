@@ -49,7 +49,7 @@ class PostsController extends Controller
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 . '.' . $file->getClientOriginalExtension();
 
-            $file->storeAs('', $name, 's3', 'public');
+            $file->storeAs('', $name, 's3');
 
             $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;

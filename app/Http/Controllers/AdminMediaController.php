@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Models\Photo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminMediaController extends Controller
 {

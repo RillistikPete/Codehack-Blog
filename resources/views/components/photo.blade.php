@@ -1,4 +1,4 @@
-@props(['photo' => null, 'alt' => ''])
+@props(['photo' => null, 'url' => null, 'alt' => ''])
 
-<img src="{{ $photo?->url ?? \App\Support\Placeholder::image() }}"
+<img src="{{ $url ?? $photo?->url ?? \App\Support\Placeholder::image() }}"
      alt="{{ $alt }}" {{ $attributes }}>

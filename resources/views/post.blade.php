@@ -26,7 +26,7 @@
                 <hr>
 
                 <!-- Preview Image -->
-                <img class="img-responsive" src="{{ $post->obj_url ? $post->obj_url : $post->photoPlaceholder() }}" alt="Photo hidden">
+                <x-photo :url="$post->obj_url" class="img-responsive" :alt="$post->title" />
 
                 <hr>
 

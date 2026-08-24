@@ -5,8 +5,10 @@
 
     <!-- Page Content -->
     <div class="container">
-        @include('includes.flash-messages')
-        @yield('content')
+        <div class="page-content">
+            @include('includes.flash-messages')
+            @yield('content')
+        </div>
     </div>
 
 @include('includes.front-footer')
