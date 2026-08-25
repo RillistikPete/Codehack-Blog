@@ -83,6 +83,7 @@ handling, Markdown rendering and HTML sanitisation, and the comment moderation
 workflow.
 Anyone who clones the repo runs sail artisan test and it works.
 No second database to create, no CI service container to configure, no credentials.
+
 ---
 
 ## Implementation notes
