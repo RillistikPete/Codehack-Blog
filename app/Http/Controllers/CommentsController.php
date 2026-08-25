@@ -28,14 +28,7 @@ class CommentsController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-    */
-
-
+    
     /*
     REFACTORED: 
     OLD - Comment::create()	            User hidden input (post_id)
@@ -45,8 +38,14 @@ class CommentsController extends Controller
     $comment = new Comment($attributes);
     $comment->setAttribute('post_id', $post->getKey());  // grabs FK from inferred parent
     $comment->save();
-
+    
     So post_id is assigned in PHP, before the INSERT ever leaves your app. The database then checks it against the constraint. 
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
     */
     public function store(Request $request, Post $post)
     {

@@ -11,6 +11,9 @@ use App\Http\Controllers\AdminMediaController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\RepliesController;
 
+use Spatie\Honeypot\ProtectAgainstSpam;
+//Add Cloudflare Turnstile if spam still gets through
+
 /* ---------------- Public ---------------- */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -20,8 +23,9 @@ Route::get('/post/{slug}', [HomeController::class, 'post'])->name('home.post');
 Route::get('/category/{id}', [HomeController::class, 'categPosts'])->name('home.categ-posts');
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactController::class, 'submitContactEmail'])->name('contact.submit');
-
+Route::post('/contact', [ContactController::class, 'submitContactEmail'])
+    ->middleware([ProtectAgainstSpam::class, 'throttle:contact']) // rate limiter provider
+    ->name('contact.submit');
 // prevents anyone from adding comment or comm reply
 Route::middleware('auth')->group(function () {
     Route::post('posts/{post}/comments', [CommentsController::class, 'store'])

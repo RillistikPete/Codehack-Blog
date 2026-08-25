@@ -6,7 +6,7 @@
 
     <p>
         @if ($reply->comment)
-            Reply to comment #{{ $reply->comment->id }} by {{ $reply->comment->author }}
+            Reply to comment id {{ $reply->comment->id }} by {{ $reply->comment->author }}
             @if ($reply->comment->post)
                 on <a href="{{ route('home.post', $reply->comment->post->slug) }}">{{ $reply->comment->post->title }}</a>
             @endif

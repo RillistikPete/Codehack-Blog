@@ -33,7 +33,7 @@
                         <td>{{ $photo->file }}</td>
                         <td>
                             @foreach ($photo->posts as $post)
-                                <a href="{{ route('posts.edit', $post->id) }}">{{ Str::limit($post->title, 25) }}</a><br>
+                                <a href="{{ route('home.post', $post->slug) }}">{{ Str::limit($post->title, 25) }}</a><br>
                             @endforeach
                             @foreach ($photo->users as $user)
                                 <a href="{{ route('users.edit', $user->id) }}">{{ $user->name }}</a><br>

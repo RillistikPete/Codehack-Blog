@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Helpers\HasGravatar;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    use HasGravatar;
+
     // With post_id in fillable, a crafted POST to that admin endpoint could move a comment onto a different post
     protected $fillable = [
         'author',

@@ -9,6 +9,7 @@ use Mail;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Mail\ContactMessage;
 
 class ContactController extends Controller
 {
@@ -20,20 +21,24 @@ class ContactController extends Controller
 
     public function submitContactEmail(Request $request)
     {
-        $user = Auth::user();
+        $validated = $request->validate([
+            'name'  => 'required|string|max:100',
+            'email' => 'required|email|max:255',
+            'msg'   => 'required|string|max:2000',
+        ]);
 
-        Mail::send('email.sendemail',[
-            'name' => $request->name,
-            'email' => $request->email,
-            'msg' => $request->msg,
-            'user' => $user
-        ], function($mail) use ($request){
-            $mail->from(env('MAIL_FROM_ADDRESS'), $request->name);
-            $mail->to(env('MAIL_USERNAME'))->subject('User Contact Email');
-        });
+        $to = config('mail.contact_to') ?: config('mail.from.address');
 
-        flash('Your email has been sent successfully.');
+        if (! $to) {
+            throw new \RuntimeException(
+                'No contact recipient configured. Set MAIL_CONTACT_TO in .env.'
+            );
+        }
 
-        return view('email/contact', compact('user'));
+        Mail::to($to)->send(
+            new ContactMessage($validated['name'], $validated['email'], $validated['msg'])
+        );
+
+        return redirect()->route('home')->with('success', 'Your message has been sent.');
     }
 }

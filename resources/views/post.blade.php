@@ -1,13 +1,9 @@
 
 @extends('layouts.blog-home')
 
-
 @section('content')
-
 <div class="row">
-
     <div class="col-md-8">
-
                 <!-- Blog Post -->
 
                 <!-- Title -->
@@ -67,10 +63,7 @@
             <!-- Comment -->
             @foreach ($comments as $comment)
                 <div class="media well">
-                    <img height="64" class="media-object pull-left"
-                        src="{{ Auth::user() && Auth::user()->name == $comment->author
-                                ? Auth::user()->gravatar
-                                : '/images/icon-user-default.png' }}" alt="">
+                    <x-photo :url="$comment->gravatar" height="64" class="media-object pull-left" :alt="$comment->author" />
                     <div class="media-body">
                         <h4 class="media-heading">{{ $comment->author }}
                             <small>{{ $comment->created_at->diffForHumans() }}</small>
@@ -80,10 +73,7 @@
                         {{-- Replies --}}
                         @forelse ($comment->replies->where('is_active', 1) as $reply)
                             <div class="media nested-comment">
-                                <img height="36" class="media-object pull-left"
-                                    src="{{ Auth::user() && Auth::user()->name == $reply->author
-                                            ? Auth::user()->gravatar
-                                            : '/images/icon-user-default.png' }}" alt="">
+                                <x-photo :url="$reply->gravatar" height="45" class="media-object pull-left" :alt="$reply->author" />
                                 <div class="media-body">
                                     <h4 class="media-heading">{{ $reply->author }}
                                         <small>{{ $reply->created_at->diffForHumans() }}</small>

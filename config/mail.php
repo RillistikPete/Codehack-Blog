@@ -99,6 +99,8 @@ return [
 
     ],
 
+    'contact_to' => env('MAIL_CONTACT_TO'),
+
     /*
     |--------------------------------------------------------------------------
     | Global "From" Address
@@ -111,7 +113,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'fpkfaculty@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply.fpkfaculty@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'fpkfaculty'),
     ],
 

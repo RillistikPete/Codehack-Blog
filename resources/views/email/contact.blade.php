@@ -1,30 +1,48 @@
 @extends('layouts.blog-home')
+
 @section('content')
-<div class="container">
-    <div class="row">
-    @include('includes.flash-messages')
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Contact Me: Send an Email</div>
-                <div class="panel-body">
-                    <form method="POST" action="{{route('contact.submit')}}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" class="form-control" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" class="form-control" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="msg">Message</label>
-                            <textarea style="height:100px;" name="msg" class="form-control" required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <input type="submit" class="btn btn-primary float-right" value="Submit" />
-                        </div>
-                </div>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Contact Me: Send an Email</div>
+            <div class="panel-body">
+
+                <form method="POST" action="{{ route('contact.submit') }}">
+                    @csrf
+                    <x-honeypot />
+
+                    <div class="form-group @error('name') has-error @enderror">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control"
+                               value="{{ old('name') }}" required>
+                        @error('name')
+                            <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group @error('email') has-error @enderror">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control"
+                               value="{{ old('email') }}" required>
+                        @error('email')
+                            <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group @error('msg') has-error @enderror">
+                        <label for="msg">Message</label>
+                        <textarea name="msg" id="msg" class="form-control"
+                                  style="height:150px;" required>{{ old('msg') }}</textarea>
+                        @error('msg')
+                            <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

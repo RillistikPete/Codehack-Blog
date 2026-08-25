@@ -81,9 +81,7 @@ class RepliesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // CommentReply::findOrFail($id)->update($request->all());
-        // $request->all() lets a crafted request rewrite the author, email,
-        //  or body from what's meant to be an approve/disapprove button
+        // $request->all() lets a crafted request update props
         $validated = $request->validate([
             'is_active' => 'required|in:0,1',
             'author'    => 'sometimes|required|string|max:255',
@@ -93,7 +91,7 @@ class RepliesController extends Controller
 
         CommentReply::findOrFail($id)->update($validated);
 
-        return back();
+        return redirect()->route('replies.index')->with('success', 'Reply updated.');
     }
     
     /**
@@ -106,7 +104,7 @@ class RepliesController extends Controller
     {
         CommentReply::findOrFail($id)->delete();
         
-        return redirect()->back();
+        return redirect()->back()->with('info', 'Reply deleted.');
 
     }
 }
