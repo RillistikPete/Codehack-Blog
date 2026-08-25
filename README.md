@@ -1,6 +1,6 @@
 # Codehack Blog
 
-![tests](https://github.com/RillistikPete/codehack-blog/actions/workflows/tests.yml/badge.svg)
+![tests](https://github.com/RillistikPete/Laravel12-Sail-Codehack/actions/workflows/tests.yml/badge.svg)
 
 A publishing platform and CMS built with Laravel 12 — originally written on Laravel 5.7 in 2018 and brought forward seven major versions in 2026.
 
