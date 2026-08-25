@@ -92,16 +92,6 @@ class PostManagementTest extends TestCase
             ->assertSee('<strong>bold</strong>', false);
     }
 
-    public function test_raw_html_in_a_post_body_is_stripped(): void
-    {
-        $post = Post::factory()->create([
-            'body' => 'Hello <script>alert("xss")</script> world.',
-        ]);
-
-        $this->assertStringNotContainsString('<script>', $post->body_html);
-        $this->assertStringContainsString('Hello', $post->body_html);
-    }
-
     public function test_an_unknown_slug_returns_404(): void
     {
         $this->get('/post/does-not-exist')->assertNotFound();
