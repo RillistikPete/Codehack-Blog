@@ -1,5 +1,3 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 # Codehack Blog
 
 ![tests](https://github.com/RillistikPete/codehack-blog/actions/workflows/tests.yml/badge.svg)
@@ -25,7 +23,7 @@ A publishing platform and CMS built with Laravel 12 — originally written on La
 
 | | |
 |---|---|
-| Framework | Laravel 12, PHP 8.4 |
+| Framework | Laravel 12.4.1, PHP 8.5.0 |
 | Database | PostgreSQL 18 |
 | Auth | Laravel Fortify |
 | Storage | AWS S3 (Flysystem) |
