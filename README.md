@@ -1,59 +1,125 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Codehack Blog
 
-## About Laravel
+![tests](https://github.com/RillistikPete/codehack-blog/actions/workflows/tests.yml/badge.svg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A publishing platform and CMS built with Laravel 12 — originally written on Laravel 5.7 in 2018 and brought forward seven major versions in 2026.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Live:** [your-domain.com](https://your-domain.com)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<!-- Add 2-3 screenshots: home page, an article, the admin dashboard.
+     Store them in docs/screenshots/ and reference them here. -->
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## What it does
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Markdown articles** with fenced code blocks, syntax highlighting, and server-side sanitisation
+- **Comment threads** with replies, and a moderation queue — comments from non-admins are held for approval, admin comments publish immediately
+- **Role-based admin panel** for posts, users, categories, media, and moderation
+- **S3-backed media library** with orphan detection and bulk deletion
+- **Contact form** protected by a honeypot and per-IP rate limiting
 
-## Laravel Sponsors
+## Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| | |
+|---|---|
+| Framework | Laravel 12, PHP 8.4 |
+| Database | PostgreSQL 18 |
+| Auth | Laravel Fortify |
+| Storage | AWS S3 (Flysystem) |
+| Frontend | Blade, Bootstrap 3, Vite |
+| Local env | Laravel Sail (Docker) |
+| Testing | PHPUnit 11 |
 
-### Premium Partners
+Notable packages: [eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable) for RESTful URLs,
+[laravel-honeypot](https://github.com/spatie/laravel-honeypot) for spam protection,
+[league/commonmark](https://commonmark.thephpleague.com/) for Markdown rendering.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Running it locally
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Requires Docker.
 
-## Code of Conduct
+```bash
+git clone https://github.com/RillistikPete/codehack-blog.git
+cd codehack-blog
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+cp .env.example .env
+composer install
+./vendor/bin/sail up -d
+sail artisan key:generate
+sail artisan migrate --seed
+sail npm install && sail npm run build
+```
 
-## Security Vulnerabilities
+The seeder creates the `administrator`, `author`, and `subscriber` roles plus an admin
+account, and prints its password to the console. Set `SEED_ADMIN_PASSWORD` in `.env`
+to choose your own.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Visit `http://localhost` (or whatever you set `APP_PORT` to).
+
+### Environment
+
+| Variable | Purpose |
+|---|---|
+| `DB_*` | PostgreSQL connection (Sail provides these by default) |
+| `AWS_*` | S3 bucket for media uploads |
+| `MAIL_CONTACT_TO` | Recipient for contact form submissions |
+| `SEED_ADMIN_PASSWORD` | Optional — admin password used by the seeder |
+
+Media uploads need a bucket with a public-read bucket policy. Without one, uploads
+succeed but images return 403.
+
+## Tests
+
+```bash
+sail artisan test
+```
+
+Feature tests run against an in-memory SQLite database, so no setup is needed.
+They cover admin authorisation, post creation and slug generation, S3 upload
+handling, Markdown rendering and HTML sanitisation, and the comment moderation
+workflow.
+Anyone who clones the repo runs sail artisan test and it works.
+No second database to create, no CI service container to configure, no credentials.
+---
+
+## Implementation notes
+
+A few decisions worth explaining, since they're the parts a reader might question.
+
+**Markdown over WYSIWYG.** Articles are stored as Markdown and rendered with CommonMark
+configured as `html_input => 'strip'`. Raw HTML in a post body is discarded rather than
+escaped, which removes the stored-XSS surface entirely without a separate sanitiser.
+The previous TinyMCE setup produced HTML that had to be trusted.
+
+**Image URLs are derived, not stored.** `Post::getObjUrlAttribute()` returns the stored
+`obj_url` if one exists and otherwise builds the S3 URL from the related photo.
+`Storage::disk('s3')->url()` performs no network call — it composes a string from config —
+so listing posts costs no S3 requests. The column remains as a per-post override.
+
+**Foreign keys come from relationships, never from request input.** Comments are created
+via `$post->comments()->create()`, which sets `post_id` from the route-bound model.
+`post_id` is deliberately absent from `$fillable` so a forged form field cannot reattach
+a comment to a different post. There's a regression test for this.
+
+**Auth is Fortify, not scaffolding.** Registration assigns a fixed `subscriber` role
+server-side; role and status are never read from request input, which would otherwise
+allow privilege escalation through the registration form.
+
+## Upgrading from Laravel 5.7
+
+The framework upgrade was the easy half. The application code needed:
+
+- Model references updated from `App\User` to `App\Models\User` — silent runtime failures, since the strings were only resolved when a relationship was touched
+- The `Auth` scaffolding controllers removed; `AuthenticatesUsers` was dropped from the framework in Laravel 8, and controller-constructor middleware in Laravel 11
+- All Blade forms converted from `laravelcollective/html` (abandoned, no Laravel 12 support) to plain HTML — 137 call sites across 15 views
+- String controller actions (`'PostsController@store'`) replaced with named routes, removed in Laravel 8
+- Migrations normalised to `bigint` keys with real foreign key constraints
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT

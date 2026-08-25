@@ -7,18 +7,17 @@
                 <!-- Blog Post -->
 
                 <!-- Title -->
+                 @section('title', $post->title)
                 <h1 id="postTitle">{{$post->title}}</h1>
 
                 <!-- Author -->
-                <p class="lead">
+                <p class="lead" style="font-size: 1.5rem;">
                     by {{$post->user?->name}}
                 </p>
-
-                <hr>
-
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span>Post created {{$post->created_at->diffForHumans()}}</p>
-
+                <p class="post-summary-meta">
+                    <span class="glyphicon glyphicon-time"></span>
+                    {{ $post->created_at->format('j F Y') }}
+                </p>
                 <hr>
 
                 <!-- Preview Image -->

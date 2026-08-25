@@ -42,14 +42,103 @@
     margin-top:20px;
 }
 
-body {
-    background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
-    background-blend-mode: normal,color-burn;
-    font-size: 14px;
+html {
+    height: 100%;
 }
 
-#postBody {
-    font-size: 15px !important; 
+body {
+    min-height: 100vh;
+    font-size: 14px;
+    background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%),
+                linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%),
+                linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
+    background-blend-mode: normal, color-burn;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+body > .container:last-of-type {
+    margin-top: auto;
+}
+
+.well {
+    box-shadow:1px;
+    border-radius:10px;
+}
+
+.well h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.well-divider {
+    margin-top: 15px;
+    margin-bottom: 24px;
+    border: 0;
+    border-top: .5px solid #c8c8c8;
+}
+
+.social-links a {
+    padding: 0 8px;
+
+    .fa-github {
+        color: black;
+    }
+    .fa-stack-overflow {
+        color: #F48024;;
+    }
+    .fa-linkedin {
+        color: #0A66C2 ;
+    }
+}
+
+
+.social-links a:hover {
+    color: #337ab7;
+}
+
+.well {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-radius: 10px;
+}
+
+.post-summary {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.post-summary:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.post-summary-title {
+    margin: 0 0 6px;
+    font-size: 22px;
+}
+
+.post-summary-title a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.post-summary-title a:hover {
+    color: #123858;
+}
+
+.post-summary-meta {
+    color: #888;
+    font-size: 13px;
+}
+
+.post-summary-body {
+    margin-bottom: 8px;
 }
 
 #bottomHr {

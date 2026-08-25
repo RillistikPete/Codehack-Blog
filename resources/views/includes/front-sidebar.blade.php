@@ -1,7 +1,7 @@
 <div class="col-md-4">
 
     <!-- Blog Search Well -->
-    {{-- <div class="well">
+    <!-- <div class="well">
         <h4>Blog Search</h4>
         <div class="input-group">
             <input type="text" class="form-control">
@@ -11,49 +11,63 @@
                 </button>
             </span>
         </div>
-    </div> --}}
+    </div> -->
 
-
-    <!-- Side Widget Well -->
     <div class="well">
-            <h4>Laravel Blog</h4>
-            <p>This blog was built with Laravel 5.7. To comment on existing posts, login or register a new account. 
-                You will be assigned as a subscriber. If you have an idea for a post, contact me and I'll grant you the role "author",
-                allowing you to leave posts. Reach me at my <a href="/contact">email.</a></p>
+        <h4>About</h4>
+        <hr class="well-divider">
+        <p>
+            I'm Gavin Forrest, a full-stack developer working mainly in
+            <strong>C# / ASP.NET Core / Azure</strong> and <strong>PHP/Laravel</strong>,
+            with SQL, Postgres, Docker and AWS underneath.
+        </p>
+        <p>
+            I write about the problems that don't have a clean answer online —
+            framework migrations, tooling that fights back, and the debugging
+            paths that actually worked.
+        </p>
+        <p>
+            [Currently open to new opportunities — based in <em>your city</em>, open to remote.]
+            <a href="{{ route('contact') }}">Get in touch</a>.
+        </p>
     </div>
 
-    <!-- Blog Categories Well -->
+    <div class="well">
+        <h4>Contact</h4>
+        <hr class="well-divider">
+        <ul class="list-inline social-links">
+            <li>
+                <a href="https://stackoverflow.com/users/9916030/pkucas?tab=profile" title="Stack Overflow" target="_blank" rel="noopener">
+                    <i class="fa fa-stack-overflow fa-2x"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/RillistikPete" title="GitHub" target="_blank" rel="noopener">
+                    <i class="fa fa-github fa-2x"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/gavin-forrest-345b05143/" title="LinkedIn" target="_blank" rel="noopener">
+                    <i class="fa fa-linkedin fa-2x"></i>
+                </a>
+            </li>
+        </ul>
+        <a class="btn btn-primary" style="margin-top:15px;" href="{{ route('contact') }}">Send An Email</a>
+    </div>
+
     <div class="well">
         <h4>Blog Categories</h4>
+        <hr class="well-divider">
         <div class="row">
             <div class="col-lg-6">
                 <ul class="list-unstyled">
-
                     @if ($categories)
-
-                        @foreach ($categories as $category)
-                            
-                            <li><a href="{{route('home.categ-posts', $category->id)}}">{{$category->name}}</a>
-                            </li>
-
+                        @foreach ($categories as $category)  
+                            <li><a href="{{route('home.categ-posts', $category->id)}}">{{$category->name}}</a></li>
                         @endforeach
-
                     @endif
                 </ul>
-            </div>  <!-- /.col-lg-6 -->
-
-        </div> <!-- /.row -->
-    </div>
-
-    <div class="well text-center">
-        <h3 style="margin-top:-10px;">Contact Me</h3>
-        <a class="btn btn-primary" href="/contact">Send An Email</a>
+            </div>
+        </div>
     </div>
 </div>
-
-<style type="text/css">
-    .well {
-        box-shadow:1px;
-        border-radius:10px;
-    }
-</style>

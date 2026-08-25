@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
-            <div class="panel-heading">Contact Me: Send an Email</div>
+            <div class="panel-heading">Send Me an Email</div>
             <div class="panel-body">
 
                 <form method="POST" action="{{ route('contact.submit') }}">

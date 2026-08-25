@@ -16,7 +16,7 @@ class ContactController extends Controller
     public function contact()
     {
         $user = Auth::user();
-        return view('email/contact', compact('user'));
+        return view('email.contact', compact('user'));
     }
 
     public function submitContactEmail(Request $request)

@@ -11,8 +11,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <!-- this goes on the tab title in browser -->
-        <title>Welcome to my Laravel Blog</title>
+        <!-- tab title in browser -->
+        <title>@yield('title', 'Gavin\'s Dev Blog')</title>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

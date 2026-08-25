@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-// for AdminPostsController@post to be able to find by slug
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 
@@ -13,6 +13,7 @@ class Post extends Model
 {
     use Sluggable;
     use SluggableScopeHelpers;
+    use HasFactory;
 
     /**
      * Return the sluggable configuration array for this model.
