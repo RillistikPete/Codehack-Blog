@@ -10,4 +10,9 @@ trait HasGravatar
 
         return "https://www.gravatar.com/avatar/{$hash}?d=mp&s=128";
     }
+
+    protected function gravatarEmail(): ?string
+    {
+        return $this->email;
+    }
 }

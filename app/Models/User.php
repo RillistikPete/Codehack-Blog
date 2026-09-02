@@ -38,6 +38,11 @@ class User extends Authenticatable
     ];
 
     /**
+     * always eager-load when retrieving this model
+     */
+    protected $with = ['role'];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

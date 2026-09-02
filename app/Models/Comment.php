@@ -12,6 +12,7 @@ class Comment extends Model
 
     // With post_id in fillable, a crafted POST to that admin endpoint could move a comment onto a different post
     protected $fillable = [
+        'user_id',
         'author',
         'email',
         'photo',
@@ -30,5 +31,10 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function gravatarEmail(): ?string
+    {
+        return $this->user?->email ?? $this->email;
     }
 }

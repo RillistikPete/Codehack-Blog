@@ -1,6 +1,18 @@
 
 @extends('layouts.blog-home')
 
+@section('title', $post->title)
+
+@section('meta')
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $post->title }}">
+    <meta property="og:description" content="{{ $post->excerpt }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @if ($post->obj_url)
+        <meta property="og:image" content="{{ $post->obj_url }}">
+    @endif
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-md-8">
@@ -21,7 +33,10 @@
                 <hr>
 
                 <!-- Preview Image -->
-                <x-photo :url="$post->obj_url" class="img-responsive" :alt="$post->title" />
+                @if ($post->obj_url)
+                    <x-photo :url="$post->obj_url" class="img-responsive" :alt="$post->title" />
+                    <hr>
+                @endif
 
                 <hr>
 

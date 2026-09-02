@@ -25,10 +25,10 @@ class HomeController extends Controller
     public function index()
     {
         return view('front/home', [
-            'posts' => Post::with(['photo', 'category', 'comments.replies'])
+            'posts' => Post::with(['category'])
                         ->orderBy('created_at', 'desc')
                         ->paginate(9),
-            'user'       => Auth::user(),
+            'category'   => null,
             'categories' => Category::all(),
         ]);
     }
@@ -49,14 +49,13 @@ class HomeController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return view('front/categ-posts', [
-            'posts'      => Post::with('photo')
-                                ->where('category_id', $id)
-                                ->orderBy('created_at', 'desc')
-                                ->paginate(5),
-            'categories' => Category::all(),
+        return view('front/home', [
+            'posts' => Post::with(['category'])
+                        ->where('category_id', $id)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(9),
             'category'   => $category,
-            'user'       => Auth::user(),
+            'categories' => Category::all(),
         ]);
     }
 }

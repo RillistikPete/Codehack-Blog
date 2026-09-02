@@ -34,8 +34,8 @@
                 @foreach ($comments as $comment)
                     <tr>
                         <td>{{ $comment->id }}</td>
-                        <td>{{ $comment->author }}</td>
-                        <td>{{ $comment->email }}</td>
+                        <td>{{ $comment->user?->name ?? $comment->author }}</td>
+                        <td>{{ $comment->user?->email ?? $comment->email }}</td>
                         <td>{{ Str::limit($comment->body, 60) }}</td>
                         <td><a href="{{ route('comments.edit', $comment->id) }}">Edit</a></td>
                         <td>

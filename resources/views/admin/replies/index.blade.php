@@ -38,8 +38,8 @@
                 @foreach ($replies as $reply)
                     <tr>
                         <td>{{ $reply->id }}</td>
-                        <td>{{ $reply->author }}</td>
-                        <td>{{ $reply->email }}</td>
+                        <td>{{ $reply->user?->name ?? $reply->author }}</td>
+                        <td>{{ $reply->user?->email ?? $reply->email }}</td>
                         <td>{{ Str::limit($reply->body, 60) }}</td>
                         <td><a href="{{ route('replies.edit', $reply->id) }}">Edit Reply</a></td>
                         <td>
@@ -77,7 +77,7 @@
         </div>
 
     @else
-        <h3 class="text-center">No replies{{ $comment ? ' to this comment' : '' }} yet.</h3>
+        <h3 class="text-center">No replies{{ $filterComment ? ' to this comment' : '' }} yet.</h3>
     @endif
 
 @endsection

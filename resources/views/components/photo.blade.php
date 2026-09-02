@@ -1,4 +1,9 @@
-@props(['photo' => null, 'url' => null, 'alt' => ''])
+@props(['photo' => null, 'url' => null, 'alt' => '', 'fallback' => true])
 
-<img src="{{ $url ?? $photo?->url ?? \App\Support\Placeholder::image() }}"
-     alt="{{ $alt }}" {{ $attributes }}>
+@php
+    $src = $url ?? $photo?->url ?? ($fallback ? \App\Support\Placeholder::image() : null);
+@endphp
+
+@if ($src)
+    <img src="{{ $src }}" alt="{{ $alt }}" {{ $attributes }}>
+@endif

@@ -141,6 +141,21 @@ body > .container:last-of-type {
     margin-bottom: 8px;
 }
 
+.post-body p {
+    margin-bottom: 1.5em;
+    line-height: 1.7;
+}
+
+.post-body h2,
+.post-body h3 {
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+}
+
+.post-body pre {
+    margin: 1.5em 0;
+}
+
 #bottomHr {
     margin-bottom:36px !important;
 }

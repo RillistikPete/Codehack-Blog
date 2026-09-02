@@ -3,6 +3,14 @@
 @section('content')
 <div class="row">
     <div class="col-md-8">
+        @if (request()->routeIs('home'))
+            <h2>Codehack Blog</h2>
+        @endif
+        @if ($category)
+            <h2>Posts in {{ $category->name }}</h2>
+            <p><a href="{{ route('home') }}">&larr; All posts</a></p>
+        @endif
+        <hr>
         @forelse ($posts as $post)
             <article class="post-summary">
                 <h3 class="post-summary-title">

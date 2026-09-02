@@ -22,7 +22,7 @@ class PostsController extends Controller
     public function index(): View
     {   
         //with('photo') so it doesn't fire a query for every post without an obj_url
-        $posts = Post::with('photo')->orderBy('created_at', 'desc')->paginate(9);
+        $posts = Post::with('photo', 'user', 'category')->orderBy('created_at', 'desc')->paginate(9);
         return view('admin.posts.index', compact('posts'));
     }
     

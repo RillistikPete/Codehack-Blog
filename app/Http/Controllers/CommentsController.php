@@ -19,7 +19,7 @@ class CommentsController extends Controller
             ? Post::find($request->query('post'))
             : null;
 
-        $comments = Comment::with('post')
+        $comments = Comment::with('post', 'user')
             ->when($post, fn ($q) => $q->where('post_id', $post->id))
             ->latest()
             ->paginate(20);

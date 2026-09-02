@@ -16,6 +16,7 @@
                 <th>Photo</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Edit</th>
                 <th>Role</th>
                 <th>Status</th>
                 <th>Created</th>
@@ -30,8 +31,9 @@
                 <tr>
                     <td>{{$user->id}}</td>
                     <td><x-photo :photo="$user->photo" height="50" width="50" /></td>
-                    <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</td>
+                    <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
+                    <td><a href="{{route('users.edit', $user->id)}}">Edit User</td>
                     <td>{{$user->role->name}}</td>
 
                     <td>{{$user->is_active == 1 ? 'Active' : 'Offline' }}</td>

@@ -10,6 +10,7 @@ class CommentReply extends Model
     use HasGravatar;
 
     protected $fillable = [
+        'user_id',
         'author',
         'email',
         'photo',

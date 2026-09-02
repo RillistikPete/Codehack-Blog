@@ -47,6 +47,7 @@ class RepliesController extends Controller
         $isAdmin = $user->isAdmin();
 
         $comment->replies()->create([
+            'user_id'   => $user-id,
             'body'      => $validated['body'],
             'author'    => $user->name,
             'email'     => $user->email,
