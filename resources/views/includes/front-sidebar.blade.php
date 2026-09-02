@@ -17,17 +17,15 @@
         <h4>About</h4>
         <hr class="well-divider">
         <p>
-            I'm Gavin Forrest, a full-stack developer working mainly in
+            Gavin Forrest is a full-stack developer working mainly in
             <strong>C# / ASP.NET Core / Azure</strong> and <strong>PHP/Laravel</strong>,
             with SQL, Postgres, Docker and AWS underneath.
         </p>
         <p>
-            I write about the problems that don't have a clean answer online —
-            framework migrations, tooling that fights back, and the debugging
-            paths that actually worked.
+            I write about the problems that don't have a clean answer online - things I've run into and my debugging
+            paths that actually worked. I hope you find them useful. Thanks for visiting.
         </p>
         <p>
-            [Currently open to new opportunities — based in <em>your city</em>, open to remote.]
             <a href="{{ route('contact') }}">Get in touch</a>.
         </p>
     </div>
