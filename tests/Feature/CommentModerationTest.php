@@ -33,6 +33,8 @@ class CommentModerationTest extends TestCase
 
     public function test_a_comment_from_a_subscriber_awaits_moderation(): void
     {
+        // surface exceptions to see error:
+        $this->withoutExceptionHandling();
         $post = Post::factory()->create();
 
         $this->actingAs($this->subscriber())
@@ -47,6 +49,7 @@ class CommentModerationTest extends TestCase
 
     public function test_a_comment_from_an_admin_is_published_immediately(): void
     {
+        $this->withoutExceptionHandling();
         $post = Post::factory()->create();
 
         $this->actingAs(User::factory()->admin()->create())
@@ -64,6 +67,7 @@ class CommentModerationTest extends TestCase
      */
     public function test_post_id_cannot_be_forged_through_the_request(): void
     {
+        $this->withoutExceptionHandling();
         $target = Post::factory()->create();
         $other  = Post::factory()->create();
 

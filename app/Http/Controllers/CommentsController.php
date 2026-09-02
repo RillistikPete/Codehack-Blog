@@ -49,7 +49,7 @@ class CommentsController extends Controller
     */
     public function store(Request $request, Post $post)
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadMissing('photo');
 
         $validated = $request->validate([
             'body' => 'required|string|max:1000',
@@ -58,6 +58,7 @@ class CommentsController extends Controller
         $isAdmin = $user->isAdmin();
 
         $post->comments()->create([
+            'user_id'   => $user->id,
             'body'      => $validated['body'],
             'author'    => $user->name,
             'email'     => $user->email,

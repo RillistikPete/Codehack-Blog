@@ -84,6 +84,10 @@ workflow.
 Anyone who clones the repo runs sail artisan test and it works.
 No second database to create, no CI service container to configure, no credentials.
 
+If you're having trouble fixing failed tests, add this line at the top of the test:
+$this->withoutExceptionHandling();
+That will show the specific exception to help you debug.
+
 ---
 
 ## Implementation notes

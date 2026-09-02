@@ -34,7 +34,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('comments', function (Blueprint $table) {
-            //
+            $table->dropForeign(['user_id']); // must come before drop column
+            $table->dropColumn('user_id');
+        });
+
+        Schema::table('comment_replies', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 };

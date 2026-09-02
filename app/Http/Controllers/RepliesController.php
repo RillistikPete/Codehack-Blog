@@ -21,7 +21,7 @@ class RepliesController extends Controller
             ? Comment::with('post')->find($request->query('comment'))
             : null;
 
-        $replies = CommentReply::with('comment.post')
+        $replies = CommentReply::with('comment.post', 'user')
             ->when($filterComment, fn ($q) => $q->where('comment_id', $filterComment->id))
             ->latest()
             ->paginate(20);
@@ -38,7 +38,7 @@ class RepliesController extends Controller
      */
     public function store(Request $request, Comment $comment)
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadMissing('photo');
 
         $validated = $request->validate([
             'body' => 'required|string|max:1000',
@@ -47,7 +47,7 @@ class RepliesController extends Controller
         $isAdmin = $user->isAdmin();
 
         $comment->replies()->create([
-            'user_id'   => $user-id,
+            'user_id'   => $user->id,
             'body'      => $validated['body'],
             'author'    => $user->name,
             'email'     => $user->email,
@@ -92,7 +92,7 @@ class RepliesController extends Controller
 
         CommentReply::findOrFail($id)->update($validated);
 
-        return redirect()->route('replies.index')->with('success', 'Reply updated.');
+        return back()->with('success', 'Reply updated.');
     }
     
     /**

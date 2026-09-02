@@ -18,7 +18,7 @@ class UserFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
+     * Should mirror all table columns or strict mode will keep finding the gaps.
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'role_id'   => \App\Models\Role::factory(),
             'is_active' => 1,
+            'photo_id' => null
         ];
     }
 

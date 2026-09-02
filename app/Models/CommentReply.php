@@ -21,4 +21,15 @@ class CommentReply extends Model
     public function comment() {
         return $this->belongsTo(Comment::class);
     }
+
+    // added with migration add_user_id_to_comments_and_replies
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    protected function gravatarEmail(): ?string
+    {
+        return $this->user?->email ?? $this->email;
+    }
 }
