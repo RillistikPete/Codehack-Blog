@@ -16,36 +16,28 @@
 @section('content')
 <div class="row">
     <div class="col-md-8">
-                <!-- Blog Post -->
+        <!-- Blog Post -->
 
-                <!-- Title -->
-                 @section('title', $post->title)
-                <h1 id="postTitle">{{$post->title}}</h1>
+        <!-- Title -->
+            @section('title', $post->title)
+        <h1 id="postTitle">{{$post->title}}</h1>
 
-                <!-- Author -->
-                <p class="lead" style="font-size: 1.5rem;">
-                    by {{$post->user?->name}}
-                </p>
-                <p class="post-summary-meta">
-                    <span class="glyphicon glyphicon-time"></span>
-                    {{ $post->created_at->format('j F Y') }}
-                </p>
-                <hr>
+        <!-- Author -->
+        <p class="lead" style="font-size: 1.5rem;">
+            by {{$post->user?->name}}
+        </p>
+        <p class="post-summary-meta">
+            <span class="glyphicon glyphicon-time"></span>
+            {{ $post->created_at->format('j F Y') }}
+        </p>
+        <hr>
 
-                <!-- Preview Image -->
-                @if ($post->obj_url)
-                    <x-photo :url="$post->obj_url" class="img-responsive" :alt="$post->title" />
-                    <hr>
-                @endif
+        <!-- Post Content -->
+        <div class="post-body">
+            {!! $post->body_html !!}
+        </div>
 
-                <hr>
-
-                <!-- Post Content -->
-                <div class="post-body">
-                    {!! $post->body_html !!}
-                </div>
-
-                <hr><hr>
+        <hr><hr>
 
         <!-- Blog Comments -->
         @if(Auth::check())

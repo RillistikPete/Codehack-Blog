@@ -14,10 +14,26 @@
     </div> -->
 
     <div class="well">
+        <h4>Blog Categories</h4>
+        <hr class="well-divider">
+        <div class="row">
+            <div class="col-lg-6">
+                <ul class="list-unstyled">
+                    @if ($categories)
+                        @foreach ($categories as $category)  
+                            <li><a href="{{route('home.categ-posts', $category->id)}}">{{$category->name}}</a></li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="well">
         <h4>About</h4>
         <hr class="well-divider">
         <p>
-            Gavin Forrest is a full-stack developer working mainly in
+            I'm Gavin, a full-stack developer working mainly in
             <strong>C# / ASP.NET Core / Azure</strong> and <strong>PHP/Laravel</strong>,
             with SQL, Postgres, Docker and AWS underneath.
         </p>
@@ -53,19 +69,4 @@
         <a class="btn btn-primary" style="margin-top:15px;" href="{{ route('contact') }}">Send An Email</a>
     </div>
 
-    <div class="well">
-        <h4>Blog Categories</h4>
-        <hr class="well-divider">
-        <div class="row">
-            <div class="col-lg-6">
-                <ul class="list-unstyled">
-                    @if ($categories)
-                        @foreach ($categories as $category)  
-                            <li><a href="{{route('home.categ-posts', $category->id)}}">{{$category->name}}</a></li>
-                        @endforeach
-                    @endif
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>

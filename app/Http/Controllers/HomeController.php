@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('front/home', [
-            'posts' => Post::with(['category'])
+            'posts' => Post::with(['category', 'photo'])
                         ->orderBy('created_at', 'desc')
                         ->paginate(9),
             'category'   => null,
@@ -50,7 +50,7 @@ class HomeController extends Controller
         $category = Category::findOrFail($id);
 
         return view('front/home', [
-            'posts' => Post::with(['category'])
+            'posts' => Post::with(['category', 'photo'])
                         ->where('category_id', $id)
                         ->orderBy('created_at', 'desc')
                         ->paginate(9),
