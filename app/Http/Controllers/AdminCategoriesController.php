@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
@@ -27,7 +28,11 @@ class AdminCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+
+        Category::create($validated);
         
         return redirect()->route('categories.index')->with('success', "Category created.");
     }
@@ -63,8 +68,11 @@ class AdminCategoriesController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $category = Category::findOrFail($id);
-        $category->update($request->all());
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($id)],
+        ]);
+
+        Category::findOrFail($id)->update($validated);
 
         return redirect()->route('categories.index')->with('success', "Category updated.");
     }
