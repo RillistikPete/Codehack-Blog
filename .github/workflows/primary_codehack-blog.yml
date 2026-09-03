@@ -29,16 +29,25 @@ jobs:
         with:
           files: 'composer.json'
 
+      # - name: Run composer install if composer.json exists
+      #   if: steps.check_files.outputs.files_exists == 'true'
+      #   run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
-        run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
+        run: composer validate --no-check-publish && composer install --no-dev --optimize-autoloader --prefer-dist --no-progress
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: php-app
           path: .
+          include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
