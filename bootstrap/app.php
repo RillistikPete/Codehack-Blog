@@ -11,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*'); // without this, css files are blocked as mixed content http - must be served over https
         // -------------------------
         // Middleware Aliases (route middleware)
         // -------------------------

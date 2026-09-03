@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Gav Forrest">
 
-        <title>@yield('title', 'Gavin\'s Dev Blog')</title>
+        <title>@yield('title', 'Fpk Dev Blog')</title>
         <meta name="description" content="@yield('description', 'Notes on .NET, Laravel, and the things that don\'t have clean answers online.')">
 
         @yield('meta')

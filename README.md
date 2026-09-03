@@ -2,9 +2,9 @@
 
 ![tests](https://github.com/RillistikPete/Codehack-Blog/actions/workflows/tests.yml/badge.svg)
 
-A publishing platform and CMS built with Laravel 12 — originally written on Laravel 5.7 in 2018 and brought forward seven major versions in 2026.
+A publishing platform and CMS built with Laravel 12 — originally written on Laravel 5.7 in 2018, upgraded to Laravel 9 in 2022, and brought forward to v12 in 2026.
 
-**Live:** [your-domain.com](https://your-domain.com)
+**Live:** [blog.fpkfaculty.com](https://blog.fpkfaculty.com)
 
 <!-- Add 2-3 screenshots: home page, an article, the admin dashboard.
      Store them in docs/screenshots/ and reference them here. -->
@@ -96,7 +96,7 @@ That will show the specific exception to help you debug.
 
 A few decisions worth explaining, since they're the parts a reader might question.
 
-**Markdown over WYSIWYG.** Articles are stored as Markdown and rendered with CommonMark
+**Markdown over WYSIWYG (was TinyMCE)** Articles are stored as Markdown and rendered with CommonMark
 configured as `html_input => 'strip'`. Raw HTML in a post body is discarded rather than
 escaped, which removes the stored-XSS surface entirely without a separate sanitiser.
 The previous TinyMCE setup produced HTML that had to be trusted.
@@ -115,9 +115,7 @@ a comment to a different post. There's a regression test for this.
 server-side; role and status are never read from request input, which would otherwise
 allow privilege escalation through the registration form.
 
-## Upgrading from Laravel 5.7
-
-The framework upgrade was the easy half. The application code needed:
+## Upgrading from Laravel 9 in a Nutshell
 
 - Model references updated from `App\User` to `App\Models\User` — silent runtime failures, since the strings were only resolved when a relationship was touched
 - The `Auth` scaffolding controllers removed; `AuthenticatesUsers` was dropped from the framework in Laravel 8, and controller-constructor middleware in Laravel 11
