@@ -1,13 +1,12 @@
 @extends('layouts.blog-home')
 
 @section('content')
-<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
-
                 <div class="panel-body text-right">
+
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         @csrf
 
@@ -73,11 +72,10 @@
                                 </button>
                         </div>
 
-
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
