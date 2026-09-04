@@ -37,7 +37,8 @@ jobs:
         run: composer validate --no-check-publish && composer install --no-dev --optimize-autoloader --prefer-dist --no-progress
 
       #needs node 24 or tests fail
-      - uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
       - run: npm ci
@@ -47,7 +48,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: php-app
-          path: .
+          path: |
+            .
+            !node_modules
           include-hidden-files: true
 
   deploy:
