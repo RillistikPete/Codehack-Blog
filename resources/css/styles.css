@@ -76,10 +76,6 @@ code, pre, kbd {
     font-size: 14px;
 }
 
-body > .container:last-of-type {
-    margin-top: auto;
-}
-
 .well h4 {
     margin-top: 0;
     margin-bottom: 0;
@@ -310,6 +306,11 @@ body > .container:last-of-type {
 
 #flashdiv {
     margin-top: 10px;
+}
+
+.site-footer {
+    margin-top: auto;
+    padding: 20px 0;
 }
 
 /*Media Queries*/
