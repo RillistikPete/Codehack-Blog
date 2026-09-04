@@ -1,6 +1,7 @@
 
 @php
     $flashes = [
+        'status' => 'success',
         'success' => 'success',
         'info'    => 'info',
         'warning' => 'warning',
