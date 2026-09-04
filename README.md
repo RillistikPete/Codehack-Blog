@@ -4,7 +4,7 @@
 
 A publishing platform and CMS built with Laravel 12 — originally written on Laravel 5.7 in 2018, upgraded to Laravel 9 in 2022, and brought forward to v12 in 2026.
 
-<!-- **Live:** [blog.fpkfaculty.com](https://blog.fpkfaculty.com) -->
+**Live:** [blog.fpkfaculty.com](https://blog.fpkfaculty.com)
 
 <!-- Add 2-3 screenshots: home page, an article, the admin dashboard.
      Store them in docs/screenshots/ and reference them here. -->

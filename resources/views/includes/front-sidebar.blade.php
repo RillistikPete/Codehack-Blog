@@ -33,12 +33,13 @@
         <h4>About</h4>
         <hr class="well-divider">
         <p>
+            <img src="{{ asset('images/me-n-mari-zgz.jpg') }}" alt="Gavin Forrest" class="about-avatar">
             I'm Gavin, a full-stack developer working mainly in
             <strong>C# / ASP.NET Core / Azure</strong> and <strong>PHP/Laravel</strong>,
             with SQL, Postgres, Docker and AWS underneath.
         </p>
         <p>
-            I write about the problems that don't have a clean answer online - things I've run into and my debugging
+                I write about the problems that don't have a clean answer online - things I've run into and my debugging
             paths that actually worked. I hope you find them useful. Thanks for visiting.
         </p>
         <p>
