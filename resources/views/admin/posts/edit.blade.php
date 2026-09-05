@@ -10,8 +10,7 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <img src="{{ $post->photo ? $post->photo->url : $post->photoPlaceholder() }}"
-                 alt="" class="img-responsive">
+            <x-photo :url="$post->obj_url" height="150" :alt="$post->title" />
         </div>
 
         <div class="col-sm-8">

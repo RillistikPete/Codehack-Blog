@@ -55,10 +55,6 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function photoPlaceholder() {
-        return "/images/placeholder.jpg";
-    }
-
     // accessor
     public function getObjUrlAttribute($value): ?string
     {
