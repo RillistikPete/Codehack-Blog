@@ -12,7 +12,7 @@
   {{-- convert to model, pass in $user, this allows for access --}}
 
     <div class="text-center">
-        <x-photo :photo="$user->photo" alt="{{ $user->name }}" class="img-rounded" height="200" />
+        <x-photo :url="$user->avatar" alt="{{ $user->name }}" class="img-rounded" height="200" width="200" />
     </div>
     <br>
     <div class="panel-body">

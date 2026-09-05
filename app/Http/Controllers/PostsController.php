@@ -89,7 +89,7 @@ class PostsController extends Controller
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 . '.' . $file->getClientOriginalExtension();
         
-            $file->storeAs('', $name, 's3', 'public');
+            $file->storeAs('', $name, 's3');
 
             $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
@@ -99,7 +99,7 @@ class PostsController extends Controller
         $post->update($input);
 
         // only now that the post points elsewhere is the old photo safe to remove
-        if ($oldPhoto && $oldPhoto->id !== $post->photo_id) {
+        if ($oldPhoto && $oldPhoto->id !== $post->photo_id && $oldPhoto->posts()->doesntExist() && $oldPhoto->users()->doesntExist()) {
             Storage::disk('s3')->delete($oldPhoto->file);
             $oldPhoto->delete();
         }
@@ -113,10 +113,16 @@ class PostsController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $post = Post::findOrFail($id);
-        
-        // unlink(public_path() . $post->photo->file);
+        $post  = Post::findOrFail($id);
+        $photo = $post->photo;
+
         $post->delete();
+
+        // only remove the file once nothing else references it
+        if ($photo && $photo->posts()->doesntExist() && $photo->users()->doesntExist()) {
+            Storage::disk('s3')->delete($photo->file);
+            $photo->delete();
+        }
 
         return redirect()->back()->with('info', 'Post deleted.');
     }

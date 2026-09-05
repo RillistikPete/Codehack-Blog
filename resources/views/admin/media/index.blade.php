@@ -29,7 +29,7 @@
                     <tr>
                         <td><input type="checkbox" name="photos[]" value="{{ $photo->id }}"></td>
                         <td>{{$photo->id}}</td>
-                        <td><x-photo :photo="$photo" height="50" /></td>
+                        <td><x-photo :url="$photo->url" height="50" width="50" :alt="$photo->file" /></td>
                         <td>{{ $photo->file }}</td>
                         <td>
                             @foreach ($photo->posts as $post)

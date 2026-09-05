@@ -30,8 +30,8 @@ class CommentReply extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected function gravatarEmail(): ?string
+    protected function avatarPhotoUrl(): ?string
     {
-        return $this->user?->email ?? $this->email;
+        return $this->user?->photo?->url;
     }
 }

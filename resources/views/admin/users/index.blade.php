@@ -30,7 +30,7 @@
             @foreach ($users as $user) 
                 <tr>
                     <td>{{$user->id}}</td>
-                    <td><x-photo :photo="$user->photo" height="50" width="50" /></td>
+                    <td><x-photo :url="$user->avatar" height="50" width="50" :alt="$user->name" /></td>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
                     <td><a href="{{route('users.edit', $user->id)}}">Edit User</td>

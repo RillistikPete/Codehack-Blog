@@ -39,7 +39,8 @@ class HomeController extends Controller
 
         return view('post', [
             'post'       => $post,
-            'comments'   => $post->comments()->with('replies')->where('is_active', 1)->get(), //eager load replies
+            'comments' => $post->comments()->with(['user.photo','replies' => fn ($q) => $q->where('is_active', 1)->with('user.photo')])
+                                            ->where('is_active', 1)->get(), //eager load replies and user photos
             'categories' => Category::all(),
             'user'       => Auth::user(),
         ]);

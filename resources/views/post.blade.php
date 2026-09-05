@@ -47,11 +47,10 @@
                 
                 <form method="POST" action="{{ route('comments.store', $post->id) }}">
                     @csrf
-                    <div class="form-group">
-                        <label for="body">Body:</label>
-                        <textarea name="body" id="body" class="form-control @error('body') is-invalid @enderror" rows="3">{{ old('body') }}</textarea>
+                    <div class="form-group @error('body') has-error @enderror">
+                        <textarea name="body" id="body" class="form-control" rows="3">{{ old('body') }}</textarea>
                         @error('body')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                            <span class="help-block"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -69,7 +68,7 @@
             <!-- Comment -->
             @foreach ($comments as $comment)
                 <div class="media well">
-                    <x-photo :url="$comment->gravatar" height="64" class="media-object pull-left" :alt="$comment->author" />
+                    <x-photo :url="$comment->avatar" height="64" class="media-object pull-left" :alt="$comment->author" />
                     <div class="media-body">
                         <h4 class="media-heading">{{ $comment->author }}
                             <small>{{ $comment->created_at->diffForHumans() }}</small>
@@ -79,7 +78,7 @@
                         {{-- Replies --}}
                         @forelse ($comment->replies->where('is_active', 1) as $reply)
                             <div class="media nested-comment">
-                                <x-photo :url="$reply->gravatar" height="45" class="media-object pull-left" :alt="$reply->author" />
+                                <x-photo :url="$reply->avatar" height="45" class="media-object pull-left" :alt="$reply->author" />
                                 <div class="media-body">
                                     <h4 class="media-heading">{{ $reply->author }}
                                         <small>{{ $reply->created_at->diffForHumans() }}</small>
