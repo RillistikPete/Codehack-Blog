@@ -68,7 +68,7 @@ class AdminMediaController extends Controller
         $count = $photos->count();
 
         return redirect()->route('media.index')
-            ->with('success', $count === 1 ? 'Photo deleted.' : "{$count} photos deleted.");
+            ->with('info', $count === 1 ? 'Photo deleted.' : "{$count} photos deleted.");
     }
 
 

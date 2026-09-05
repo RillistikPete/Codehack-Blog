@@ -118,6 +118,6 @@ class PostsController extends Controller
         // unlink(public_path() . $post->photo->file);
         $post->delete();
 
-        return redirect()->route('posts.index');
+        return redirect()->back()->with('info', 'Post deleted.');
     }
 }

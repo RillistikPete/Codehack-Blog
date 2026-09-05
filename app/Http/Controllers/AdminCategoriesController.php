@@ -87,6 +87,6 @@ class AdminCategoriesController extends Controller
     {
         Category::findOrFail($id)->delete();
 
-        return redirect()->route('categories.index')->with('success', "Category deleted.");
+        return redirect()->route('categories.index')->with('info', "Category deleted.");
     }
 }

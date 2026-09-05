@@ -5,7 +5,9 @@
     @include('includes.markdown-editor')
 
     <h1>Create Post</h1>
-
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <div class="row">
         <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
@@ -34,10 +36,6 @@
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </form>
-    </div>
-    
-    <div class="row">
-        @include('includes.form_error')
     </div>
 
 @endsection

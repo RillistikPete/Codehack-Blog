@@ -39,7 +39,7 @@
             with SQL, Postgres, Docker and AWS underneath.
         </p>
         <p>
-                I write about the problems that don't have a clean answer online - things I've run into and my debugging
+            I write about the problems that don't have a clean answer online - things I've run into and my debugging
             paths that actually worked. I hope you find them useful. Thanks for visiting.
         </p>
         <p>

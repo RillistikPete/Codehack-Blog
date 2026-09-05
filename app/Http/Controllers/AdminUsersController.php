@@ -130,6 +130,6 @@ class AdminUsersController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted.');
+        return redirect()->route('users.index')->with('info', 'User deleted.');
     }
 }
