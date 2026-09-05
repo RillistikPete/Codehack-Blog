@@ -65,7 +65,7 @@ class PostsController extends Controller
      */
     public function edit($id): View
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with('photo')->findOrFail($id);
         //had to add pluck for both post and categories in edit posts - edit.blade.php
         $categories = Category::pluck('name', 'id')->all();
         return view('admin.posts.edit', compact('post', 'categories'));
@@ -79,7 +79,7 @@ class PostsController extends Controller
      */
     public function update(PostsCreateRequest $request, $id): RedirectResponse
     {
-        $post  = Post::findOrFail($id);
+        $post = Post::with('photo')->findOrFail($id);
         $input = $request->validated();
 
         // capture the current photo before we point the post at a new one
@@ -113,7 +113,7 @@ class PostsController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $post  = Post::findOrFail($id);
+        $post = Post::with('photo')->findOrFail($id);
         $photo = $post->photo;
 
         $post->delete();

@@ -68,9 +68,10 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
+        // to prevent lazy loading of photo, use with
+        $user = User::with('photo')->findOrFail($id);
         //if it's just finding id, findOrFail will work.  If it's something like 'name' and 'id'
         // for role, you must use pluck() and plug in params.
-        $user = User::findOrFail($id);
         $roles = Role::pluck('name', 'id')->all();
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -83,7 +84,7 @@ class AdminUsersController extends Controller
     public function update(UsersEditRequest $request, $id): RedirectResponse
     {
         // UsersEditRequest
-        $user = User::findOrFail($id);
+        $user = User::with('photo')->findOrFail($id);
         $oldPhoto = $user->photo;
         $input = $request->validated();
 
@@ -121,7 +122,7 @@ class AdminUsersController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('photo')->findOrFail($id);
 
         if ($user->photo) {
             Storage::disk('s3')->delete($user->photo->file);
