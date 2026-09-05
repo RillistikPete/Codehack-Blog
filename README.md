@@ -6,12 +6,8 @@ A publishing platform and CMS built with Laravel 12 — originally written on La
 
 **Live:** [blog.fpkfaculty.com](https://blog.fpkfaculty.com)
 
-<p align="center">
-  <img src="docs/screenshots/homepage.png" alt="Home page" width="50%" height="50%">
-  <hr>
-  <img src="docs/screenshots/adminpage.png" alt="Admin dashboard" width="50%" height="50%">
-</p>
-
+|:---:|:---:|
+| ![Home](docs/screenshots/homepage.png) | ![Admin](docs/screenshots/adminpage.png) |
 ---
 
 ## What it does
