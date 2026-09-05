@@ -6,8 +6,10 @@ A publishing platform and CMS built with Laravel 12 — originally written on La
 
 **Live:** [blog.fpkfaculty.com](https://blog.fpkfaculty.com)
 
+| Home | Admin |
 |:---:|:---:|
 | ![Home](docs/screenshots/homepage.png) | ![Admin](docs/screenshots/adminpage.png) |
+
 ---
 
 ## What it does
