@@ -5,12 +5,14 @@
 
     <h1 class="text-center">Edit User Settings</h1>
     <hr>
+    
+    @include('includes.form_error')
 
   {{-- !!! $user->id  is required below to work for index.blade.php  {{route('users.edit', $user->id)}} --}}
   {{-- convert to model, pass in $user, this allows for access --}}
 
     <div class="text-center">
-        <img class="img-rounded" height="200px" src="{{$user->photo ? $user->photo->url : '/images/placeholder.jpg'}}" alt="">
+        <x-photo :photo="$user->photo" alt="{{ $user->name }}" class="img-rounded" height="200" />
     </div>
     <br>
     <div class="panel-body">
@@ -78,10 +80,6 @@
                 <button type="submit" class="btn btn-danger col-sm-6">Delete User</button>
             </div>
         </form>        
-    </div>
-
-
-    @include('includes.form_error')
-       
+    </div>  
 
 @stop

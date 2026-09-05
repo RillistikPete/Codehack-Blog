@@ -3,7 +3,9 @@
 @section('content')
 
     <h1>Edit Comment</h1>
-
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <p>
         @if ($comment->post)
             On <a href="{{ route('home.post', $comment->post->slug) }}">{{ $comment->post->title }}</a>
@@ -77,7 +79,5 @@
             @endif
         </div>
     </div>
-
-    @include('includes.form_error')
 
 @endsection

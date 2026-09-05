@@ -3,7 +3,9 @@
 @section('content')
 
     <h1>Create User</h1>
-
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
         @csrf
 
@@ -54,7 +56,5 @@
             <button type="submit" class="btn btn-primary">Create User</button>
         </div>
     </form>
-
-    @include('includes.form_error')
 
 @stop

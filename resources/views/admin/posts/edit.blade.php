@@ -5,7 +5,9 @@
     @include('includes.markdown-editor')
 
     <h1>Edit Post</h1>
-
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <div class="row">
         <div class="col-sm-8">
             <img src="{{ $post->photo ? $post->photo->url : $post->photoPlaceholder() }}"
@@ -55,10 +57,6 @@
             </form>
 
         </div>
-    </div>
-
-    <div class="row">
-        @include('includes.form_error')
     </div>
 
 @endsection

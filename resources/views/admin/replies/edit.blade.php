@@ -3,7 +3,9 @@
 @section('content')
 
     <h1>Edit Reply</h1>
-
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <p>
         @if ($reply->comment)
             Reply to comment id {{ $reply->comment->id }} by {{ $reply->comment->author }}
@@ -76,7 +78,5 @@
             @endif
         </div>
     </div>
-
-    @include('includes.form_error')
 
 @endsection
