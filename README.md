@@ -80,7 +80,7 @@ sail artisan test
 
 Feature tests run against an in-memory SQLite database, so no setup is needed.
 They cover admin authorisation, post creation and slug generation, S3 upload
-handling, Markdown rendering and HTML sanitisation, and the comment moderation
+handling, Markdown rendering and HTML sanitization, and the comment moderation
 workflow.
 Anyone who clones the repo runs sail artisan test and it works.
 No second database to create, no CI service container to configure, no credentials.
@@ -91,22 +91,22 @@ No second database to create, no CI service container to configure, no credentia
 
 A few decisions worth explaining, since they're the parts a reader might question.
 
-**Markdown over WYSIWYG (was TinyMCE)** Articles are stored as Markdown and rendered with CommonMark
+Markdown instead of TinyMCE. Articles are stored as Markdown and rendered with CommonMark
 configured as `html_input => 'strip'`. Raw HTML in a post body is discarded rather than
-escaped, which removes the stored-XSS surface entirely without a separate sanitiser.
+escaped, which removes the stored-XSS surface entirely without a separate sanitizer.
 The previous TinyMCE setup produced HTML that had to be trusted.
 
-**Image URLs are derived, not stored.** `Post::getObjUrlAttribute()` returns the stored
+Image URLs are derived, not stored. `Post::getObjUrlAttribute()` returns the stored
 `obj_url` if one exists and otherwise builds the S3 URL from the related photo.
-`Storage::disk('s3')->url()` performs no network call — it composes a string from config —
-so listing posts costs no S3 requests. The column remains as a per-post override.
+`Storage::disk('s3')->url()` composes a string from config —
+so listing posts costs **no S3 requests**. The column remains as a per-post override.
 
-**Foreign keys come from relationships, never from request input.** Comments are created
+Foreign keys come from relationships, never from request input. Comments are created
 via `$post->comments()->create()`, which sets `post_id` from the route-bound model.
 `post_id` is deliberately absent from `$fillable` so a forged form field cannot reattach
 a comment to a different post. There's a regression test for this.
 
-**Auth is Fortify, not scaffolding.** Registration assigns a fixed `subscriber` role
+Auth is **Fortify**, not scaffolding. Registration assigns a fixed `subscriber` role
 server-side; role and status are never read from request input, which would otherwise
 allow privilege escalation through the registration form.
 
