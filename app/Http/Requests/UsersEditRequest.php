@@ -30,7 +30,7 @@ class UsersEditRequest extends FormRequest
             'role_id'   => 'required|exists:roles,id',
             'is_active' => 'required|in:0,1',
             'password'  => 'nullable|min:8|confirmed',
-            'photo_id'  => 'nullable|image|max:5120',
+            'photo_id'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ];
     }
 

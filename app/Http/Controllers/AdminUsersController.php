@@ -83,31 +83,33 @@ class AdminUsersController extends Controller
      */
     public function update(UsersEditRequest $request, $id): RedirectResponse
     {
-        // UsersEditRequest
-        $user = User::with('photo')->findOrFail($id);
+        $user     = User::with('photo')->findOrFail($id);
+        $input    = $request->validated();
         $oldPhoto = $user->photo;
-        $input = $request->validated();
+        $newPhoto = null;
 
+        // a blank password field submits as null and would wipe the hash
         if (empty($input['password'])) {
             unset($input['password']);
         }
 
-        if ($file = $request->file('photo_id'))
-        {
+        if ($file = $request->file('photo_id')) {
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 . '-' . time() . '.' . $file->getClientOriginalExtension();
 
-            $file->storeAs('', $name, 's3');
+            if (! $file->storeAs('', $name, 's3')) {
+                return back()->withInput()->with('error', 'The image could not be uploaded. Please try again.');
+            }
 
-            $photo = Photo::create(['file' => $name]);
-            $input['photo_id'] = $photo->id;
+            $newPhoto = Photo::create(['file' => $name]);
+            $input['photo_id'] = $newPhoto->id;
         }
-        
+
         $user->update($input);
 
-        $oldPhoto = $user->photo;
-
-        if ($oldPhoto && $oldPhoto->id !== $user->photo_id) {
+        if ($oldPhoto && $newPhoto
+            && $oldPhoto->id !== $newPhoto->id
+            && $oldPhoto->posts()->doesntExist() && $oldPhoto->users()->doesntExist()) {
             Storage::disk('s3')->delete($oldPhoto->file);
             $oldPhoto->delete();
         }

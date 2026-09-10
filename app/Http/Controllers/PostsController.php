@@ -80,26 +80,32 @@ class PostsController extends Controller
     public function update(PostsCreateRequest $request, $id): RedirectResponse
     {
         $post = Post::with('photo')->findOrFail($id);
-        $input = $request->validated();
+        $input = $request->validated(); // does not include empty file input
 
         // capture the current photo before we point the post at a new one
         $oldPhoto = $post->photo;
-
+        $newPhoto = null;
+        $file = $request->file('photo_id');
+        
         if ($file = $request->file('photo_id')) {
             $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 . '.' . $file->getClientOriginalExtension();
-        
-            $file->storeAs('', $name, 's3');
 
-            $photo = Photo::create(['file' => $name]);
-            $input['photo_id'] = $photo->id;
-            $input['obj_url']  = null;   // let the accessor re-derive
+            if (! $file->storeAs('', $name, 's3')) {
+                return back()->withInput()->with('error', 'The image could not be uploaded. Please try again.');
+            }
+
+            $newPhoto = Photo::firstOrCreate(['file' => $name]);
+            $input['photo_id'] = $newPhoto->id;
+            $input['obj_url']  = null;
         }
 
         $post->update($input);
 
-        // only now that the post points elsewhere is the old photo safe to remove
-        if ($oldPhoto && $oldPhoto->id !== $post->photo_id && $oldPhoto->posts()->doesntExist() && $oldPhoto->users()->doesntExist()) {
+        if ($oldPhoto && $newPhoto
+            && $oldPhoto->id !== $newPhoto->id
+            && $oldPhoto->file !== $newPhoto->file
+            && $oldPhoto->posts()->doesntExist() && $oldPhoto->users()->doesntExist()) {
             Storage::disk('s3')->delete($oldPhoto->file);
             $oldPhoto->delete();
         }
